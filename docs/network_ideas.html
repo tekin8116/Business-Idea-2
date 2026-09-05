@@ -1,0 +1,577 @@
+<title>Eleven Doors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#FCFCFA; --surface:#F2F4F1; --raised:#FFFFFF;
+  --ink:#191D21; --ink-soft:#5A646C; --ink-faint:#8B949B;
+  --line:#DBDFDA; --line-soft:#E9ECE8;
+  --accent:#0E5A64; --accent-ink:#0A464E; --accent-wash:#E2EDEE;
+  --money:#1C6244; --money-wash:#E4EFE9;
+  --alert:#94461A; --alert-wash:#F7E9E0;
+  --measure:69ch;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#121618; --surface:#1A2023; --raised:#1E262A;
+    --ink:#E9EBE8; --ink-soft:#9BA5AB; --ink-faint:#77828A;
+    --line:#2B3337; --line-soft:#232B2F;
+    --accent:#57B6C2; --accent-ink:#8ACFD8; --accent-wash:#153136;
+    --money:#5AAE84; --money-wash:#153024;
+    --alert:#D38A57; --alert-wash:#2E2118;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#121618; --surface:#1A2023; --raised:#1E262A;
+  --ink:#E9EBE8; --ink-soft:#9BA5AB; --ink-faint:#77828A;
+  --line:#2B3337; --line-soft:#232B2F;
+  --accent:#57B6C2; --accent-ink:#8ACFD8; --accent-wash:#153136;
+  --money:#5AAE84; --money-wash:#153024;
+  --alert:#D38A57; --alert-wash:#2E2118;
+}
+*{box-sizing:border-box}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Source Serif 4","Iowan Old Style",Georgia,serif;
+  font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased}
+.shell{display:grid; grid-template-columns:1fr; max-width:1240px; margin:0 auto; padding:0 24px}
+@media(min-width:1060px){.shell{grid-template-columns:240px minmax(0,1fr); gap:56px; padding:0 40px}}
+nav.toc{display:none}
+@media(min-width:1060px){
+  nav.toc{display:block; position:sticky; top:0; align-self:start; max-height:100vh;
+    overflow-y:auto; padding:56px 0 40px;
+    font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11.5px; line-height:1.45}
+  nav.toc ol{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px}
+  nav.toc a{color:var(--ink-soft); text-decoration:none; display:block;
+    border-left:2px solid var(--line); padding-left:11px}
+  nav.toc a:hover,nav.toc a:focus-visible{color:var(--accent); border-left-color:var(--accent)}
+  nav.toc .n{color:var(--ink-faint); margin-right:7px}
+  nav.toc .tochead{font-weight:600; letter-spacing:.11em; text-transform:uppercase;
+    color:var(--ink-faint); margin:18px 0 12px; padding-left:13px}
+  nav.toc .tochead:first-child{margin-top:0}
+}
+main{padding:52px 0 100px; min-width:0}
+.band{max-width:var(--measure)}
+h1,h2,h3,h4{font-family:Archivo,"Helvetica Neue",Arial,sans-serif; text-wrap:balance; margin:0}
+h1{font-size:clamp(31px,4.6vw,44px); font-weight:700; line-height:1.1; letter-spacing:-.022em}
+h2{font-size:25px; font-weight:600; line-height:1.2; letter-spacing:-.013em;
+  margin:64px 0 4px; padding-top:26px; border-top:1px solid var(--line)}
+h2 .who{display:block; font-family:"IBM Plex Mono",monospace; font-size:11px;
+  font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:9px}
+h3{font-size:17px; font-weight:600; margin:30px 0 4px; letter-spacing:-.006em}
+h4{font-size:14px; font-weight:600; margin:22px 0 2px}
+p{margin:13px 0}
+a{color:var(--accent); text-decoration-thickness:1px; text-underline-offset:2px}
+strong{font-weight:600}
+.eyebrow{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px; font-weight:600;
+  letter-spacing:.15em; text-transform:uppercase; color:var(--accent); margin:0 0 12px}
+.standfirst{font-size:20px; line-height:1.5; color:var(--ink-soft); margin:20px 0 0; max-width:62ch}
+.masthead{padding:56px 0 34px; border-bottom:3px solid var(--accent)}
+.meta{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11.5px;
+  color:var(--ink-faint); margin-top:26px; display:flex; flex-wrap:wrap; gap:6px 20px}
+ul,ol{margin:13px 0; padding-left:22px; max-width:var(--measure)}
+li{margin-bottom:7px}
+li::marker{color:var(--accent)}
+.scroller{overflow-x:auto; margin:20px 0; border:1px solid var(--line); border-radius:3px; background:var(--raised)}
+table{border-collapse:collapse; width:100%; font-size:14.5px; font-family:Archivo,sans-serif}
+caption{text-align:left; padding:13px 16px 0; font-family:"IBM Plex Mono",monospace;
+  font-size:11px; letter-spacing:.11em; text-transform:uppercase; color:var(--ink-faint)}
+th,td{padding:9px 16px; text-align:left; border-bottom:1px solid var(--line-soft); vertical-align:top}
+thead th{font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:600;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--ink-faint);
+  border-bottom:1px solid var(--line); white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.num,th.num{text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap;
+  font-family:"IBM Plex Mono",monospace; font-size:13px}
+tr.total td{border-top:2px solid var(--line); font-weight:600; background:var(--surface)}
+code{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.88em;
+  background:var(--surface); padding:1px 5px; border-radius:2px; color:var(--accent-ink)}
+.note{border-left:3px solid var(--accent); background:var(--accent-wash);
+  padding:15px 19px; margin:22px 0; max-width:var(--measure); border-radius:0 3px 3px 0}
+.note.warn{border-left-color:var(--alert); background:var(--alert-wash)}
+.note.money{border-left-color:var(--money); background:var(--money-wash)}
+.note p:first-child{margin-top:0}
+.note p:last-child{margin-bottom:0}
+.note .label{font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:600;
+  letter-spacing:.13em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:6px}
+.note.warn .label{color:var(--alert)}
+.note.money .label{color:var(--money)}
+.idea{border:1px solid var(--line); border-radius:3px; padding:16px 20px; margin:14px 0;
+  max-width:var(--measure); background:var(--raised)}
+.idea .kind{font-family:"IBM Plex Mono",monospace; font-size:10px; font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; display:inline-block;
+  padding:2px 8px; border-radius:2px; margin-bottom:9px}
+.idea.real .kind{background:var(--money-wash); color:var(--money); border:1px solid var(--money)}
+.idea.amb .kind{background:var(--accent-wash); color:var(--accent-ink); border:1px solid var(--accent)}
+.idea.cre .kind{background:var(--alert-wash); color:var(--alert); border:1px solid var(--alert)}
+.idea h4{margin:0 0 4px; font-size:16px}
+.idea p{margin:8px 0; font-size:15.5px}
+.idea p:last-child{margin-bottom:0}
+.context{background:var(--surface); border:1px solid var(--line); border-radius:3px;
+  padding:14px 18px; margin:16px 0; max-width:var(--measure); font-size:15.5px}
+.context .label{font-family:"IBM Plex Mono",monospace; font-size:10px; font-weight:600;
+  letter-spacing:.13em; text-transform:uppercase; color:var(--ink-faint); display:block; margin-bottom:7px}
+.context p{margin:7px 0}
+.context p:last-child{margin-bottom:0}
+footer{border-top:1px solid var(--line); margin-top:72px; padding:26px 0 0;
+  font-size:13.5px; color:var(--ink-faint); max-width:var(--measure)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+h2[id]{scroll-margin-top:20px}
+</style>
+
+<div class="shell">
+<nav class="toc" aria-label="Contents">
+  <div class="tochead">Read first</div>
+  <ol>
+    <li><a href="#pattern"><span class="n">—</span>The pattern</a></li>
+    <li><a href="#triage"><span class="n">—</span>Triage</a></li>
+  </ol>
+  <div class="tochead">The eleven</div>
+  <ol>
+    <li><a href="#physicians"><span class="n">01</span>Physicians</a></li>
+    <li><a href="#crypto"><span class="n">02</span>Crypto friends</a></li>
+    <li><a href="#deep"><span class="n">03</span>Deep Foods</a></li>
+    <li><a href="#amneal"><span class="n">04</span>Amneal</a></li>
+    <li><a href="#goldman"><span class="n">05</span>Goldman cousin</a></li>
+    <li><a href="#vc"><span class="n">06</span>Former VC boss</a></li>
+    <li><a href="#nykaa"><span class="n">07</span>Falguni / Nykaa</a></li>
+    <li><a href="#cigar"><span class="n">08</span>Cigar cousin</a></li>
+    <li><a href="#california"><span class="n">09</span>California friend</a></li>
+    <li><a href="#tarsadia"><span class="n">10</span>Tarsadia</a></li>
+    <li><a href="#rupen"><span class="n">11</span>Uncle Rupen</a></li>
+  </ol>
+  <div class="tochead">Then</div>
+  <ol>
+    <li><a href="#overlaps"><span class="n">—</span>Overlaps</a></li>
+    <li><a href="#week"><span class="n">—</span>This week</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="masthead band">
+  <p class="eyebrow">Network analysis &middot; Eleven contacts, thirty-three ideas</p>
+  <h1>Eleven Doors</h1>
+  <p class="standfirst">Every contact you named, the industry they sit in as it actually looks right now, and three ideas each &mdash; one realistic, one ambitious, one creative. Plus the one pattern that shows up in four of them.</p>
+  <div class="meta">
+    <span>September 2026</span><span>Researched, not brainstormed</span><span>The overlaps section is the important one</span>
+  </div>
+</header>
+
+<h2 id="pattern">The pattern worth seeing before anything else</h2>
+<div class="band">
+<p>I researched all eleven industries independently. One structure appeared in four of them, unprompted:</p>
+<p><strong>Somebody deducts money from what they owe your contact, the deduction is often wrong, and nobody audits it.</strong></p>
+</div>
+
+<div class="scroller band">
+<table>
+  <caption>The same business, four markets</caption>
+  <thead><tr><th>Market</th><th>Who deducts</th><th>Scale of the leak</th><th>Your door</th></tr></thead>
+  <tbody>
+    <tr><td>Medical practices</td><td>Insurers, via silent underpayment</td><td>~1.2% of collections</td><td>Your father</td></tr>
+    <tr><td>Food manufacturers</td><td>Retailers, via chargebacks and deductions</td><td><strong>1&ndash;5% of gross retail revenue</strong></td><td>Deep Foods</td></tr>
+    <tr><td>Hotel owners</td><td>Franchisors, via fees and marketing levies</td><td>10&ndash;12% of room revenue</td><td>Tarsadia / AAHOA</td></tr>
+    <tr><td>Cigar makers</td><td>FDA, via user fees now ruled inapplicable</td><td>$100M+ collected 2016&ndash;2023</td><td>Your cousin</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="band">
+<p>You have already built the engine for the first one. The mechanics barely change: ingest the remittance or statement file, compare against what the agreement actually says, surface the gap, generate the dispute.</p>
+<p>That is not four businesses. It is <strong>one machine with four doors, and you have a personal relationship behind every door.</strong> If nothing else in this document survives scrutiny, that observation should.</p>
+</div>
+
+<h2 id="triage">Honest triage</h2>
+<div class="scroller band">
+<table>
+  <caption>What each contact is actually for</caption>
+  <thead><tr><th>Contact</th><th>Best use</th><th>Usable when</th></tr></thead>
+  <tbody>
+    <tr><td>Physician network</td><td>Customers</td><td><strong>Now</strong></td></tr>
+    <tr><td>Deep Foods</td><td>Design partner + customer</td><td><strong>Now</strong></td></tr>
+    <tr><td>Crypto friends</td><td>Design partners + intros</td><td><strong>Now</strong></td></tr>
+    <tr><td>Uncle Rupen</td><td>Paid work + operating education</td><td><strong>Now</strong></td></tr>
+    <tr><td>Cigar cousin</td><td>Advisor first, partner second</td><td><strong>Now</strong> (as advisor)</td></tr>
+    <tr><td>California friend</td><td>Partner in a specific deal</td><td>Now, with a warning</td></tr>
+    <tr><td>Amneal</td><td>Teacher, not customer</td><td>Now, framed correctly</td></tr>
+    <tr><td>Goldman cousin</td><td>Market intelligence</td><td>Now (intel), later (capital)</td></tr>
+    <tr><td>Former VC boss</td><td>Relationship to repair</td><td>Now, with no ask attached</td></tr>
+    <tr><td>Tarsadia</td><td>Capital / distribution</td><td>Only with traction</td></tr>
+    <tr><td>Falguni Nayar</td><td>Judgment, one conversation</td><td>Only with something real</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="physicians"><span class="who">Door 01</span>Your father and the physician network</h2>
+<div class="band">
+<div class="context">
+  <span class="label">Where this stands</span>
+  <p>The 835 scanner is built and tested. You're gathering files. Everything below assumes that proceeds in parallel.</p>
+</div>
+
+<div class="idea real">
+  <span class="kind">Realistic</span>
+  <h4>Sell the billing-company report card</h4>
+  <p>Practices pay a billing company 4&ndash;9% of collections and have <em>no way to evaluate them</em>. There is no scorecard. Build one: denial rate, days in A/R, net collection rate, underpayment capture, all benchmarked against the specialty.</p>
+  <p>It runs on the same 835 files you already parse, requires no new sales motion, and it is the single most gossiped-about topic among practice owners. Sell it as an annual audit of a vendor they can't otherwise judge &mdash; $1,500&ndash;3,000, low effort, and it makes the underpayment finding land harder.</p>
+</div>
+
+<div class="idea amb">
+  <span class="kind">Ambitious</span>
+  <h4>Payer contract benchmarking</h4>
+  <p>Once you've processed remittances for twenty-plus practices you will know something almost nobody knows: what each payer <em>actually</em> allows for each procedure, by specialty, in your region.</p>
+  <p>That powers a far more valuable conversation than claim recovery: <em>"You're at 138% of Medicare for cardiac cath. The regional median for groups your size is 161%. Here's what that gap is worth annually."</em> Contract negotiation support is a much higher-value engagement, and the data accrues only to whoever has been reading everyone's remittances. Get aggregate de-identified data rights into your first BAA or you cannot do this later.</p>
+</div>
+
+<div class="idea cre">
+  <span class="kind">Creative</span>
+  <h4>The revenue leak index, published</h4>
+  <p>Publish an annual anonymized report: <em>"What independent cardiology practices in the Northeast lost to payer underpayment in 2026."</em> Specialty societies would circulate it, trade press would cover it, and inbound leads arrive without outreach.</p>
+  <p>You have the data as a byproduct of the work. Publishing it converts a services business into an authority, which is how you eventually reach practices your father has never met.</p>
+</div>
+</div>
+
+<h2 id="crypto"><span class="who">Door 02</span>Your crypto friends</h2>
+<div class="band">
+<div class="context">
+  <span class="label">Where the industry actually is</span>
+  <p>The GENIUS Act created a federal licensing regime for payment stablecoins. Regulators <strong>missed the July 18, 2026 deadline</strong> for final rules; the effective date is January 18, 2027 or 120 days after final rules issue. Issuers face reserve, licensing, audit and disclosure requirements, and smaller non-bank players face real consolidation pressure.</p>
+  <p>Separately: <strong>Form 1099-DA now requires brokers to report cost basis</strong> on digital asset transactions from January 1, 2026, filed in 2027. Gross proceeds reporting already began for 2025.</p>
+</div>
+
+<div class="idea real">
+  <span class="kind">Realistic</span>
+  <h4>Cost-basis reconstruction, for platforms and for whales</h4>
+  <p>The industry's open secret is that cost basis data is a disaster. Every transfer between wallets and platforms breaks the chain. When basis reporting hits in the 2027 filing season, platforms face a wave of customer disputes and IRS mismatch notices, and large individual holders face genuinely painful reconstruction problems.</p>
+  <p>Build the reconciliation engine that repairs basis across chains and venues. Two markets: sell to platforms as infrastructure, or sell to high-net-worth individuals as a high-fee service. <strong>Your friends know the wealthy holders</strong> &mdash; that is the warmer, faster, better-paying half.</p>
+  <p>This is the same shape as the 835 scanner: messy transaction files in, reconciled truth out. You have already proven you can build it.</p>
+</div>
+
+<div class="idea amb">
+  <span class="kind">Ambitious</span>
+  <h4>Stablecoin issuer compliance infrastructure</h4>
+  <p>The GENIUS Act obliges permitted issuers to hold qualifying reserves and publish regular attested disclosures. Large bank-affiliated issuers will build this internally. Smaller issuers cannot, and the rules land within months.</p>
+  <p>Build the reserve monitoring, attestation and disclosure reporting layer as a service. The timing is unusually precise for a regulatory play, and <strong>your friends' platform relationships are exactly the design partners you'd need</strong>. Risk: if final rules slip again, so does your market &mdash; and this space has burned people before.</p>
+</div>
+
+<div class="idea cre">
+  <span class="kind">Creative</span>
+  <h4>Crypto family office operations</h4>
+  <p>The wealthiest people in crypto are frequently terrible at the boring parts: key management and inheritance, entity structuring, custody hygiene, charitable strategy, what happens if they die tomorrow. Traditional wealth managers don't understand the assets; crypto natives don't think about estates.</p>
+  <p>A discreet operations and structuring practice for large individual holders is high-fee, referral-gated, and almost impossible to enter cold. <strong>It is entered exactly one way: through friends who know those people.</strong> Which is what you have.</p>
+</div>
+</div>
+
+<h2 id="deep"><span class="who">Door 03</span>Deep Foods</h2>
+<div class="band">
+<div class="context">
+  <span class="label">Where the industry actually is</span>
+  <p>Retail chargebacks run <strong>1&ndash;5% of gross retail revenue</strong> for vendors who don't actively manage them. Costco applies a 2% chargeback for packaging non-compliance and $5&ndash;10 per mislabeled carton. And the single leading cause of Costco supplier chargebacks is not packaging or quality &mdash; it is <strong>inaccurate or late ASNs: data communication failures.</strong></p>
+  <p>Meanwhile AI demand forecasting has moved seasonal accuracy from roughly 50% to 82% in five months for some operators, cutting seasonal overproduction 40%.</p>
+</div>
+
+<div class="idea real">
+  <span class="kind">Realistic</span>
+  <h4>Retail deduction recovery &mdash; the scanner, for groceries</h4>
+  <p>This is the strongest single idea in this document, and it is the business you have already built once.</p>
+  <p>Retailers deduct from supplier payments constantly &mdash; chargebacks, allowances, shortages, compliance penalties. Many are invalid or duplicated. Almost nobody disputes them, because reconciling a Costco deduction file against POs and ASNs is miserable manual work.</p>
+  <p>At 1&ndash;5% of gross retail revenue, a $150M manufacturer is leaking <strong>$1.5M&ndash;7.5M a year</strong>. Build the parser, categorize deductions, flag the invalid ones, generate disputes. Deep Foods is your customer zero and your proof. The NJ specialty-food manufacturing community is your referral network.</p>
+  <p>Pitch it in one sentence: <em>"Let me look at twelve months of your Costco and Trader Joe's deductions and tell you how much of it you should never have paid."</em></p>
+</div>
+
+<div class="idea amb">
+  <span class="kind">Ambitious</span>
+  <h4>Demand forecasting built on cultural calendars</h4>
+  <p>Off-the-shelf forecasting handles mainstream SKUs. It badly mishandles ethnic food, where demand spikes around Diwali, Ramadan, Navratri and regional festivals that move on lunar calendars and don't appear in any standard seasonality model.</p>
+  <p>Every specialty-food manufacturer either overproduces or stocks out around these events, every year. A forecasting layer trained on cultural calendars plus retail POS is genuinely differentiated, and the documented prize is a 40% cut in seasonal overproduction. Deep Foods can tell you in one conversation whether this is a real pain or one they've already solved.</p>
+</div>
+
+<div class="idea cre">
+  <span class="kind">Creative</span>
+  <h4>Be their co-packing pipeline</h4>
+  <p>Deep's underused asset is manufacturing capacity and retail relationships. The hardest problem for any emerging food brand is finding a co-packer who'll take small volume seriously.</p>
+  <p>Broker the match: source emerging South Asian and adjacent food brands who need production, bring them to Deep as co-manufacturing customers, take a fee or an equity slice. You bring Deep incremental high-margin volume with no sales cost, and you get a portfolio of small brand positions for free. It also puts you inside the CPG world at zero capital.</p>
+</div>
+</div>
+
+<h2 id="amneal"><span class="who">Door 04</span>Amneal Pharmaceuticals</h2>
+<div class="band">
+<div class="context">
+  <span class="label">Where the industry actually is</span>
+  <p>DSCSA serialization is in full effect. There is a persistent <strong>2&ndash;3% error rate in data files, quarantining thousands of products daily</strong>, and the biggest operational headache across the supply chain is exception handling &mdash; mismatched transaction data, missing serial numbers, verification downtime.</p>
+</div>
+
+<p>Your instinct is right: a $6B public company with mature internal processes is not a customer for a first-time founder. So don't treat them as one.</p>
+
+<div class="idea real">
+  <span class="kind">Realistic</span>
+  <h4>Ask for a day, not an order</h4>
+  <p>The ask is: <em>"Can I spend a day with your supply chain or quality team to understand how DSCSA exceptions actually get resolved?"</em> That is flattering, costs them almost nothing, and gives you something no amount of research provides &mdash; the real workflow, in a real plant, from people who do it.</p>
+  <p>Amneal is a <strong>teacher and a future reference</strong>. The customers are the hundreds of mid-market manufacturers, repackagers and distributors with the same problem and no internal team to throw at it.</p>
+</div>
+
+<div class="idea amb">
+  <span class="kind">Ambitious</span>
+  <h4>DSCSA exception resolution for mid-market pharma</h4>
+  <p>A 2&ndash;3% error rate across millions of transactions is a permanent manual reconciliation burden, and quarantined product is money frozen. Build the matching and resolution engine: ingest EPCIS data, identify the mismatch class, propose or automate the fix, track resolution.</p>
+  <p>Revenue per customer in pharma runs high. The obstacles are real &mdash; validation requirements are heavy and sales cycles are long &mdash; but the pain is present-tense rather than deadline-dependent, which is rarer than it sounds.</p>
+</div>
+
+<div class="idea cre">
+  <span class="kind">Creative</span>
+  <h4>Drug shortage prediction as portfolio intelligence</h4>
+  <p>Generic manufacturers decide what to produce based on price, competition, and who else is exiting. Shortages are enormously profitable for whoever is positioned when one hits.</p>
+  <p>FDA publishes shortage data, ANDA holders, and inspection actions. A model that predicts which molecules are heading into shortage &mdash; from holders exiting, API supply concentration, facility warning letters &mdash; would be genuinely valuable to a generic portfolio team. All public data. And Amneal can tell you in one conversation whether they'd pay for it, which is the cheapest possible validation of a real product.</p>
+</div>
+</div>
+
+<h2 id="goldman"><span class="who">Door 05</span>Your cousin at Goldman</h2>
+<div class="band">
+<div class="context">
+  <span class="label">Where the industry actually is</span>
+  <p>82% of investment firms now use AI for deal sourcing research, and the share using it inside the investment decision itself doubled in a year. Bessemer reported reclaiming 234 hours per analyst.</p>
+</div>
+
+<div class="idea real">
+  <span class="kind">Realistic</span>
+  <h4>Use him as a sensor, not a customer</h4>
+  <p>He sees deal flow, multiples, and what's actually getting funded in tech, media and telecom. One coffee a quarter asking "what are you seeing" is free, genuinely useful, and costs him nothing. He also knows what "impressive" looks like on paper, which matters when you eventually raise or sell.</p>
+</div>
+
+<div class="idea amb">
+  <span class="kind">Ambitious</span>
+  <h4>Exit readiness for founder-owned businesses</h4>
+  <p>Roughly six million small and mid-sized businesses will change hands in the coming decade, and about 80% of those exits are companies under $2M &mdash; too small for bankers, poorly served by brokers. Most go to market unprepared: messy financials, no data room, no story, no quality-of-earnings work.</p>
+  <p>A productized exit-readiness service is a real business, and you have an unusual advisory bench for it: <strong>a Goldman banker who knows what buyers want, and a cousin who has actually sold a company.</strong> Fees are meaningful and the tailwind is demographic rather than regulatory.</p>
+</div>
+
+<div class="idea cre">
+  <span class="kind">Creative</span>
+  <h4>A seller-intent signal engine</h4>
+  <p>288 private equity roll-up platforms compete for proprietary deal flow, and sourcing is their permanent bottleneck. Build a model that identifies owner-operated businesses likely to sell &mdash; entity registration age, absence of successors, lapsing licenses, declining permit activity, slowing review velocity, real estate ownership.</p>
+  <p>Sell the leads or the subscription. Your cousin validates whether the signal is worth anything and can introduce you to buyers, which are the two things that would otherwise take a year to learn.</p>
+</div>
+</div>
+
+<h2 id="vc"><span class="who">Door 06</span>Your former VC boss</h2>
+<div class="band">
+<p>This one isn't really an idea question, so I'm going to treat it as what it is.</p>
+
+<div class="idea real">
+  <span class="kind">Realistic</span>
+  <h4>Repair it with no ask attached</h4>
+  <p>Send a short, honest note. You left abruptly, you didn't handle it well, you're sorry, you hope he's doing well. Nothing else. No update, no request, no hint.</p>
+  <p>People remember who apologised without wanting something. If a job or an introduction comes later, it comes because the relationship exists again. And it's worth doing whether or not anything follows &mdash; unfinished things like this cost more to carry than to resolve.</p>
+</div>
+
+<div class="idea amb">
+  <span class="kind">Ambitious</span>
+  <h4>Come back with work, not a r&eacute;sum&eacute;</h4>
+  <p>Don't ask for the job. Pick three sectors, write genuinely excellent investment memos on them, and send one &mdash; unsolicited, with no ask. That's a far stronger reintroduction than a request, and it demonstrates the exact thing you said you'd now do better.</p>
+</div>
+
+<div class="idea cre">
+  <span class="kind">Creative</span>
+  <h4>Build the tool the firm needs, then hand it over</h4>
+  <p>A sourcing or diligence tool aimed at their specific thesis. It re-opens the relationship on your terms, proves capability rather than claiming it, and might become a job, a product, or a customer. The appetite is documented &mdash; firms are actively reclaiming hundreds of analyst hours with exactly this kind of tooling.</p>
+</div>
+
+<div class="note warn">
+  <span class="label">One honest thing</span>
+  <p>You said the hard part wasn't the work &mdash; it was the anxiety of leading calls and not feeling fully prepared. AI genuinely fixes preparation. It does not fix the feeling of being on a call with people watching you.</p>
+  <p>That's worth thinking about before you aim at getting the same job back, because the same environment tends to produce the same experience. If you go back, go back having decided how you'll handle that part &mdash; not hoping better preparation dissolves it.</p>
+</div>
+</div>
+
+<h2 id="nykaa"><span class="who">Door 07</span>Falguni Nayar and Nykaa</h2>
+<div class="band">
+<div class="context">
+  <span class="label">Where the industry actually is</span>
+  <p>Nykaa holds roughly 30% of India's online beauty market with 37M customers and 210 stores, but faces Myntra, Tata Cliq and Reliance's Tira, plus quick commerce. Beauty is already <strong>Blinkit's second-largest category at 13.4% of daily sales</strong>, and quick commerce's share of online beauty spending is projected to rise from ~16% to ~30% by FY30. Nykaa's answer is Nykaa Now, a 30-minute to 2-hour delivery service in key metros.</p>
+</div>
+
+<p>This is your least usable contact and the easiest to waste. Guard it.</p>
+
+<div class="idea real">
+  <span class="kind">Realistic</span>
+  <h4>One conversation, later, for judgment</h4>
+  <p>Not a pitch, not a customer, not an investor. When you have something real, ask for twenty minutes of advice. Someone who built a category-defining company from scratch in her fifties has pattern recognition you cannot buy, and asking for judgment is the one ask that doesn't cost the relationship.</p>
+</div>
+
+<div class="idea amb">
+  <span class="kind">Ambitious</span>
+  <h4>The India&ndash;US beauty and wellness bridge</h4>
+  <p>Here is a genuine overlap between two of your contacts. Indian beauty and personal care brands &mdash; ayurvedic skincare, ethnic haircare, wellness &mdash; have almost no presence in mainstream US retail. Meanwhile the US South Asian population is over five million and increasingly affluent, and mainstream American retail is actively hunting for global beauty stories.</p>
+  <p><strong>You have brand access on one side (Nykaa's ecosystem) and US retail distribution knowledge on the other (Deep Foods sells Costco and Trader Joe's).</strong> Being the entity that brings Indian BPC brands into US retail sits exactly at that intersection. Capital-light to start &mdash; you'd broker, not buy.</p>
+</div>
+
+<div class="idea cre">
+  <span class="kind">Creative</span>
+  <h4>Quick-commerce readiness</h4>
+  <p>Ten-minute delivery is restructuring Indian retail, and it demands different pack sizes, different pricing, different assortment logic and different data practices than traditional ecommerce. Most brands are adapting badly and in a hurry.</p>
+  <p>A product or practice helping brands convert for q-commerce is well-timed. Honest caveat: executing in India without being there is hard, and this is the idea on this page most likely to fail on distance alone.</p>
+</div>
+</div>
+
+<h2 id="cigar"><span class="who">Door 08</span>Your cousin and Unitabac</h2>
+<div class="band">
+<div class="context">
+  <span class="label">What just happened in this industry</span>
+  <p>In <strong>April 2026 a federal court finalised that premium cigars are exempt from the FDA's Deeming Rule</strong> &mdash; no product approval, no user fees, no deeming compliance. Companies had paid <strong>over $100 million in user fees between 2016 and 2023</strong> on products now held outside the rule. The global premium market is projected to grow from $10.3B in 2023 to $13.6B by 2030, across a fragmented landscape of 1,000+ US brands.</p>
+</div>
+
+<div class="idea real">
+  <span class="kind">Realistic</span>
+  <h4>He's your most valuable advisor and you haven't used him</h4>
+  <p>Of everyone on this list, he is the only person who has done the exact thing you are trying to do: built something in an unglamorous industry and sold it to a public company. Not advised on it. Did it.</p>
+  <p>One long conversation about the middle years &mdash; what nearly killed it, what he'd skip, how the buyer actually found him &mdash; is worth more than several of the ideas in this document. There is no ask in that conversation, which makes it the easiest call you'll make. <strong>Make it this week.</strong></p>
+</div>
+
+<div class="idea amb">
+  <span class="kind">Ambitious</span>
+  <h4>Consolidate premium cigar brands</h4>
+  <p>A fragmented industry of 1,000+ brands, a market heading to $13.6B, and a decade-long regulatory overhang that lifted five months ago. That combination usually causes valuations to re-rate and owners who were waiting to exit to start moving.</p>
+  <p>Your cousin has completed an exit in this exact space, knows the operators and the acquirers, and would be a genuinely credible partner rather than a cheerleader. Capital-gated &mdash; which is what the Tarsadia and Goldman doors are theoretically for.</p>
+</div>
+
+<div class="idea cre">
+  <span class="kind">Creative</span>
+  <h4>The user fee question</h4>
+  <p>Over $100M in FDA user fees were collected between 2016 and 2023 on products a federal court has now held were never subject to the rule. Whether any refund pathway exists is a real legal question that I cannot resolve from public sources &mdash; it may well be no.</p>
+  <p>But it's worth one phone call, because <strong>your cousin will know in about ninety seconds</strong> whether the industry has already looked at this. And even if refunds are impossible, the same research produces something valuable: a list of exactly which companies were carrying that cost, are now relieved of it, and have suddenly better economics. That is an acquisition target list assembled from public data.</p>
+</div>
+</div>
+
+<h2 id="california"><span class="who">Door 09</span>Your California friend</h2>
+<div class="band">
+<div class="note warn">
+  <span class="label">The clearest "don't" in this document</span>
+  <p>California cannabis cultivation is in genuine collapse. Wholesale flower has fallen to roughly <strong>$300&ndash;500 per pound against $1,400&ndash;1,600 in 2018</strong>. Licensed cultivation grew 340% between 2018 and 2022 while legal sales grew 22%. An estimated 400&ndash;500 California dispensaries have closed. And <strong>only 27% of cannabis companies were profitable in 2024, down from 42% two years earlier.</strong></p>
+  <p>Growers are selling below production cost. If your friend is serious about entering cultivation, showing him these numbers is the most valuable thing you could do for him this year.</p>
+</div>
+
+<div class="context">
+  <span class="label">Where the better opportunity is</span>
+  <p>Laundromats: unattended 24/7 operation is now the industry default, remote monitoring and dynamic pricing are affordable at single-owner scale, and <strong>card-enabled locations command meaningfully higher acquisition multiples than coin-only stores.</strong> Single stores trade at 3&ndash;5x SDE, multi-store operators at 4&ndash;6x EBITDA, in a market where revenue per store is rising as weaker sites close.</p>
+</div>
+
+<div class="idea real">
+  <span class="kind">Realistic</span>
+  <h4>Be the analyst on his laundromat deals</h4>
+  <p>He has the capital and the appetite; you have the ability to build models and evaluate deals quickly. Do the underwriting: market demographics, machine age, utility costs, competitive density, upgrade economics. Paid, immediate, and it teaches you small-business acquisition from inside a live deal.</p>
+</div>
+
+<div class="idea amb">
+  <span class="kind">Ambitious</span>
+  <h4>A card-conversion roll-up</h4>
+  <p>A documented value-add playbook: buy coin-only stores at 3&ndash;5x SDE, install card and app systems, capture revenue lift and customer data, exit the portfolio at a higher multiple. The mechanism is well-established, boring, cash-generative, and unglamorous enough that competition is thin.</p>
+  <p>He brings capital and operating appetite; you bring analysis, systems and technology. That is a real partnership rather than you asking for a favour.</p>
+</div>
+
+<div class="idea cre">
+  <span class="kind">Creative</span>
+  <h4>Find the sellers before the brokers do</h4>
+  <p>The same seller-intent engine as the Goldman idea, pointed at laundromats: coin-only signals from reviews and street view, long-registered entities, aging owners, good demographics, no recent permits. Use it for his acquisitions, then sell it to the growing population of searchers doing exactly this. Almost no capital required and it compounds into a data asset.</p>
+</div>
+</div>
+
+<h2 id="tarsadia"><span class="who">Door 10</span>The Tarsadia family</h2>
+<div class="band">
+<div class="context">
+  <span class="label">The thing worth knowing about this network</span>
+  <p><strong>AAHOA's 20,000 members own 60% of all hotels in the United States</strong> and account for 1.4% of national GDP. That is one of the most concentrated business communities in America, and it is the community your network sits inside.</p>
+  <p>Its members are struggling with exactly the problems you're good at: <strong>67% cite managing disparate systems as a top challenge, 27% run more than seven platforms, and 27% spend over eleven hours a week reconciling data.</strong> Only 25% consider themselves ready to adopt AI. Meanwhile franchise fees run 10&ndash;12% of room revenue &mdash; $200,000&ndash;300,000 annually on a $2M property &mdash; and owners widely believe their mandatory marketing contributions never come back to their territory.</p>
+</div>
+
+<div class="idea real">
+  <span class="kind">Realistic</span>
+  <h4>Don't approach them. Approach the community.</h4>
+  <p>You're right that Tarsadia is a "only with something real" contact. But the association is not. AAHOA has 20,000 members, regional chapters, a large annual convention, and a track record of endorsing vendors. That is a reachable channel that doesn't require a billionaire's introduction &mdash; and if you're succeeding inside it, the introduction becomes easy rather than necessary.</p>
+</div>
+
+<div class="idea amb">
+  <span class="kind">Ambitious</span>
+  <h4>Franchise fee and brand cost audit</h4>
+  <p>This is the fourth door in the pattern from the top of this document, and it may be the largest. Hotel owners pay 10&ndash;12% of room revenue in royalties, marketing levies, loyalty program costs and reservation fees, calculated from statements almost nobody audits line by line. Errors, misapplied charges and unjustified levies are common in any billing regime that complex.</p>
+  <p>Same machine you've already built: parse the statements, compare against the franchise agreement, surface the discrepancies. On a $2M property the fee base is $200&ndash;300k, so even a small error rate is worth real money &mdash; and there are 20,000 owners in one association who talk to each other constantly.</p>
+</div>
+
+<div class="idea cre">
+  <span class="kind">Creative</span>
+  <h4>The nightly reconciliation layer</h4>
+  <p>Twenty-seven percent of independent hotel operators spend more than eleven hours a week reconciling data across seven-plus systems. That is more than half a full-time job, per property, spent on something a piece of middleware should do.</p>
+  <p>A product that unifies PMS, OTA, POS and accounting into one nightly report is unglamorous and deeply wanted. AAHOA's existing official PMS partnership proves the association channel works for vendors who earn it.</p>
+</div>
+</div>
+
+<h2 id="rupen"><span class="who">Door 11</span>Uncle Rupen</h2>
+<div class="band">
+<div class="context">
+  <span class="label">Where these industries actually are</span>
+  <p>Family entertainment centres are a <strong>$34B market growing 10&ndash;12% annually</strong>. Party deposits cut no-shows by 45%. Food and beverage is 30&ndash;40% of revenue at the best venues, and multi-activity concepts consistently beat single-attraction ones.</p>
+  <p>Restaurants are harder: full-service labour is trending to <strong>35&ndash;40% of sales</strong>, turnover exceeds 70% annually at $5,000+ per replacement, and 57% of operators say growing catering sales has been a struggle. Independent restaurants declined 2.3% in 2025.</p>
+</div>
+
+<div class="idea real">
+  <span class="kind">Realistic</span>
+  <h4>Become his operating analyst</h4>
+  <p>He runs a kids' entertainment venue, luxury party halls, restaurants and real estate &mdash; and almost certainly has no unified view across them. Build it: booking utilisation by daypart, party conversion rate, F&amp;B attach, labour as a percentage of sales, revenue per available hour.</p>
+  <p>It's paid work, it starts immediately, and it teaches you multi-unit operations from someone who has already built and sold a business. This is the fastest path to earning something on this entire page.</p>
+</div>
+
+<div class="idea amb">
+  <span class="kind">Ambitious</span>
+  <h4>Revenue management for independent venues</h4>
+  <p>Deposits cut no-shows 45%; F&amp;B attach drives 30&ndash;40% of revenue at top venues; most independent operators do neither systematically. Build booking, deposit and upsell optimisation for Xtreme Energy and the party halls first, then sell to the thousands of independent FECs and banquet halls in a market growing at double digits.</p>
+  <p>A live venue as design partner is exactly what makes a product like this credible to the next twenty buyers.</p>
+</div>
+
+<div class="idea cre">
+  <span class="kind">Creative</span>
+  <h4>The South Asian wedding platform</h4>
+  <p>Indian weddings are multi-day, extraordinarily high-budget events coordinated almost entirely through WhatsApp threads and spreadsheets. Vendor coordination, guest logistics, multi-event scheduling, and payments across a dozen suppliers are all done by hand.</p>
+  <p>Average transaction values are enormous, the vertical is genuinely underserved by mainstream wedding software, and <strong>your uncle owns the supply side</strong> &mdash; halls, restaurants, catering. Start as the operating system for his venues, expand to the vendor network around them. Your community is the market, which is the rarest kind of advantage.</p>
+</div>
+</div>
+
+<h2 id="overlaps">The overlaps</h2>
+<div class="band">
+<p>You asked me to look for these specifically. Four are real.</p>
+
+<h3>1. The deduction machine &mdash; four markets, one engine</h3>
+<p>Covered at the top. Medical underpayments, retail chargebacks, franchise fees, and possibly FDA user fees are the same problem with different file formats. <strong>You have built it once and have a personal door into all four.</strong> This is the highest-conviction observation in this document.</p>
+
+<h3>2. Deep Foods &times; Nykaa &mdash; the consumer bridge</h3>
+<p>US retail distribution knowledge on one side, Indian brand access on the other, and a growing affluent South Asian population in between. Bringing Indian beauty and food brands into US retail is capital-light if you broker rather than buy.</p>
+
+<h3>3. The Indian-American business community as a distribution channel</h3>
+<p>Look at what your contacts have in common: food manufacturing, pharma, hotels (60% of US hotels via AAHOA), physicians, event venues. This is a dense, high-trust, referral-driven community concentrated in New Jersey and California, and <strong>one credible engagement inside it travels much further than one credible engagement in a cold market.</strong> Whatever you build, this is your first hundred customers.</p>
+
+<h3>4. Cigar cousin &times; Goldman cousin &times; Tarsadia &mdash; the acquisition stack</h3>
+<p>If you ever pursue a roll-up &mdash; cigars, laundromats, anything fragmented &mdash; you have someone who has done an exit, someone who understands buyers and valuation, and a potential capital source. Most first-time acquirers have none of those.</p>
+</div>
+
+<h2 id="week">If I were you, this week</h2>
+<div class="band">
+<p>Not eleven conversations. Three, plus the thing already in motion.</p>
+<ol>
+  <li><strong>Your cigar cousin.</strong> No ask, no pitch. "How did you actually do it?" He is the only person on this list who has completed the journey you're starting, and this is the easiest call you will make.</li>
+  <li><strong>Deep Foods.</strong> One question: <em>"How much do Costco and Trader Joe's deduct from your payments each year, and does anyone check whether those deductions are right?"</em> If the answer is a shrug, you have found your second business and you already know how to build it.</li>
+  <li><strong>Uncle Rupen.</strong> Offer to build him a proper operating dashboard across the venues. Paid work, this month, and an education in running things.</li>
+  <li><strong>Keep the 835 files moving.</strong> Everything above is more useful once you have shipped something real to one physician.</li>
+</ol>
+
+<div class="note money">
+  <span class="label">The thing to hold onto</span>
+  <p>Every idea we killed over the last three weeks died from something invisible from the outside &mdash; a market too small, a buyer who wouldn't pay, an incumbent who'd fix it for free. You now have eleven people who can see those things from the inside, before you build.</p>
+  <p>That is worth more than any single idea in this document.</p>
+</div>
+</div>
+
+<footer>
+  <p>Prepared September 2026 from public sources current to this date. Industry figures are cited from published research and should be re-verified before you rely on them commercially. The FDA user fee refund question in Door 08 is genuinely unresolved and is flagged as a question to ask, not a conclusion. Nothing here is legal, tax or investment advice.</p>
+</footer>
+
+</main>
+</div>
