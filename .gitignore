@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Generated output. Never commit these: report/ and any real remittance data
+# are PHI once this runs against a live practice.
+report/
+sample_data/
+*.835
