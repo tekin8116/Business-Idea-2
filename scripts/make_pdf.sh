@@ -6,7 +6,7 @@
 # real typefaces, and on one without they fall back to the declared stack.
 set -euo pipefail
 
-CHROME="${CHROME:-$(command -v google-chrome || command -v chromium || echo /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome)}"
+CHROME="${CHROME:-$(ls /opt/pw-browsers/chromium-*/chrome-linux/chrome 2>/dev/null || command -v google-chrome || command -v chromium || echo /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome)}"
 OUT=pdf
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT

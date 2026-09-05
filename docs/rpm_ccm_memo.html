@@ -1,0 +1,596 @@
+<title>Fifty Dollars a Patient</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#FCFCFA; --surface:#F2F4F1; --raised:#FFFFFF;
+  --ink:#191D21; --ink-soft:#5A646C; --ink-faint:#8B949B;
+  --line:#DBDFDA; --line-soft:#E9ECE8;
+  --accent:#0E5A64; --accent-ink:#0A464E; --accent-wash:#E2EDEE;
+  --money:#1C6244; --money-wash:#E4EFE9;
+  --alert:#94461A; --alert-wash:#F7E9E0;
+  --measure:69ch;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#121618; --surface:#1A2023; --raised:#1E262A;
+    --ink:#E9EBE8; --ink-soft:#9BA5AB; --ink-faint:#77828A;
+    --line:#2B3337; --line-soft:#232B2F;
+    --accent:#57B6C2; --accent-ink:#8ACFD8; --accent-wash:#153136;
+    --money:#5AAE84; --money-wash:#153024;
+    --alert:#D38A57; --alert-wash:#2E2118;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#121618; --surface:#1A2023; --raised:#1E262A;
+  --ink:#E9EBE8; --ink-soft:#9BA5AB; --ink-faint:#77828A;
+  --line:#2B3337; --line-soft:#232B2F;
+  --accent:#57B6C2; --accent-ink:#8ACFD8; --accent-wash:#153136;
+  --money:#5AAE84; --money-wash:#153024;
+  --alert:#D38A57; --alert-wash:#2E2118;
+}
+*{box-sizing:border-box}
+body{
+  background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Source Serif 4","Iowan Old Style",Georgia,serif;
+  font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+.shell{display:grid; grid-template-columns:1fr; max-width:1240px; margin:0 auto; padding:0 24px}
+@media(min-width:1060px){.shell{grid-template-columns:236px minmax(0,1fr); gap:56px; padding:0 40px}}
+nav.toc{display:none}
+@media(min-width:1060px){
+  nav.toc{display:block; position:sticky; top:0; align-self:start; max-height:100vh;
+    overflow-y:auto; padding:56px 0 40px;
+    font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11.5px; line-height:1.5}
+  nav.toc ol{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px}
+  nav.toc a{color:var(--ink-soft); text-decoration:none; display:block;
+    border-left:2px solid var(--line); padding-left:11px}
+  nav.toc a:hover,nav.toc a:focus-visible{color:var(--accent); border-left-color:var(--accent)}
+  nav.toc .n{color:var(--ink-faint); margin-right:7px}
+  nav.toc .tochead{font-weight:600; letter-spacing:.11em; text-transform:uppercase;
+    color:var(--ink-faint); margin-bottom:16px; padding-left:13px}
+}
+main{padding:52px 0 100px; min-width:0}
+.band{max-width:var(--measure)}
+h1,h2,h3,h4{font-family:Archivo,"Helvetica Neue",Arial,sans-serif; text-wrap:balance; margin:0}
+h1{font-size:clamp(31px,4.6vw,44px); font-weight:700; line-height:1.1; letter-spacing:-.022em}
+h2{font-size:25px; font-weight:600; line-height:1.2; letter-spacing:-.013em;
+  margin:64px 0 6px; padding-top:26px; border-top:1px solid var(--line)}
+h3{font-size:18px; font-weight:600; margin:34px 0 4px; letter-spacing:-.006em}
+h4{font-size:14px; font-weight:600; margin:24px 0 2px}
+p{margin:14px 0}
+a{color:var(--accent); text-decoration-thickness:1px; text-underline-offset:2px}
+strong{font-weight:600}
+.eyebrow{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px; font-weight:600;
+  letter-spacing:.15em; text-transform:uppercase; color:var(--accent); margin:0 0 12px}
+.standfirst{font-size:20px; line-height:1.5; color:var(--ink-soft); margin:20px 0 0; max-width:62ch}
+.masthead{padding:56px 0 34px; border-bottom:3px solid var(--accent)}
+.meta{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11.5px;
+  color:var(--ink-faint); margin-top:26px; display:flex; flex-wrap:wrap; gap:6px 20px}
+ul,ol{margin:14px 0; padding-left:22px; max-width:var(--measure)}
+li{margin-bottom:8px}
+li::marker{color:var(--accent)}
+.scroller{overflow-x:auto; margin:22px 0; border:1px solid var(--line); border-radius:3px; background:var(--raised)}
+table{border-collapse:collapse; width:100%; font-size:14.5px; font-family:Archivo,sans-serif}
+caption{text-align:left; padding:13px 16px 0; font-family:"IBM Plex Mono",monospace;
+  font-size:11px; letter-spacing:.11em; text-transform:uppercase; color:var(--ink-faint)}
+th,td{padding:9px 16px; text-align:left; border-bottom:1px solid var(--line-soft); vertical-align:top}
+thead th{font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:600;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--ink-faint);
+  border-bottom:1px solid var(--line); white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.num,th.num{text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap;
+  font-family:"IBM Plex Mono",monospace; font-size:13px}
+tr.total td{border-top:2px solid var(--line); font-weight:600; background:var(--surface)}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.88em}
+code{background:var(--surface); padding:1px 5px; border-radius:2px; color:var(--accent-ink)}
+.note{border-left:3px solid var(--accent); background:var(--accent-wash);
+  padding:16px 20px; margin:24px 0; max-width:var(--measure); border-radius:0 3px 3px 0}
+.note.warn{border-left-color:var(--alert); background:var(--alert-wash)}
+.note.money{border-left-color:var(--money); background:var(--money-wash)}
+.note p:first-child{margin-top:0}
+.note p:last-child{margin-bottom:0}
+.note .label{font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:600;
+  letter-spacing:.13em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:7px}
+.note.warn .label{color:var(--alert)}
+.note.money .label{color:var(--money)}
+.figures{display:grid; grid-template-columns:repeat(auto-fit,minmax(148px,1fr)); gap:1px;
+  background:var(--line); border:1px solid var(--line); margin:26px 0}
+.fig{background:var(--ground); padding:16px 18px}
+.fig .v{font-family:Archivo,sans-serif; font-size:26px; font-weight:700; letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums; line-height:1.15}
+.fig .k{font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--ink-faint); margin-top:6px}
+.phase{display:flex; gap:18px; padding:18px 0; border-bottom:1px solid var(--line-soft); max-width:var(--measure)}
+.phase:last-child{border-bottom:none}
+.phase .when{font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:600;
+  letter-spacing:.06em; color:var(--accent); flex:0 0 104px; padding-top:4px; text-transform:uppercase}
+.phase .what{flex:1; min-width:0}
+.phase .what h4{margin-top:0}
+.phase .what p{margin:5px 0 0; font-size:15.5px; color:var(--ink-soft)}
+dl.gloss{max-width:var(--measure); margin:20px 0}
+dl.gloss dt{font-family:"IBM Plex Mono",monospace; font-size:13px; font-weight:600;
+  color:var(--accent-ink); margin-top:16px}
+dl.gloss dd{margin:3px 0 0; font-size:15.5px; color:var(--ink-soft)}
+.script{background:var(--surface); border:1px solid var(--line); border-radius:3px;
+  padding:16px 20px; margin:16px 0; max-width:var(--measure); font-size:16px}
+.script .who{font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:600;
+  letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); display:block; margin-bottom:8px}
+.script p{margin:9px 0; font-style:italic}
+footer{border-top:1px solid var(--line); margin-top:72px; padding:26px 0 0;
+  font-size:13.5px; color:var(--ink-faint); max-width:var(--measure)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+h2[id],h3[id]{scroll-margin-top:20px}
+</style>
+
+<div class="shell">
+<nav class="toc" aria-label="Contents">
+  <div class="tochead">Contents</div>
+  <ol>
+    <li><a href="#plain"><span class="n">01</span>In plain English</a></li>
+    <li><a href="#programs"><span class="n">02</span>The two programs</a></li>
+    <li><a href="#money"><span class="n">03</span>Where money comes from</a></li>
+    <li><a href="#roles"><span class="n">04</span>Who does what</a></li>
+    <li><a href="#legal"><span class="n">05</span>The legal structure</a></li>
+    <li><a href="#unit"><span class="n">06</span>Real unit economics</a></li>
+    <li><a href="#sequence"><span class="n">07</span>Start with CCM</a></li>
+    <li><a href="#need"><span class="n">08</span>What you need</a></li>
+    <li><a href="#projections"><span class="n">09</span>Projections</a></li>
+    <li><a href="#compliance"><span class="n">10</span>Compliance</a></li>
+    <li><a href="#enrollment"><span class="n">11</span>Enrollment</a></li>
+    <li><a href="#competition"><span class="n">12</span>Competition</a></li>
+    <li><a href="#gtm"><span class="n">13</span>Go to market</a></li>
+    <li><a href="#fails"><span class="n">14</span>How this fails</a></li>
+    <li><a href="#ninety"><span class="n">15</span>First 90 days</a></li>
+    <li><a href="#glossary"><span class="n">16</span>Glossary</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="masthead band">
+  <p class="eyebrow">Operating memo &middot; Second of two</p>
+  <h1>Fifty Dollars a Patient</h1>
+  <p class="standfirst">Medicare pays practices every month to keep an eye on chronic patients between visits. Almost no small practice collects it, because doing so requires staff they do not have. That gap is the business.</p>
+  <div class="meta">
+    <span>September 2026</span><span>Written for someone new to the industry</span><span>Read before contacting a single practice</span>
+  </div>
+</header>
+
+<h2 id="plain">01 &nbsp;In plain English, assuming you know nothing</h2>
+<div class="band">
+<p>Medicare used to pay doctors only when a patient physically showed up. That created an obvious problem: a diabetic with high blood pressure needs attention continuously, not in fifteen-minute slices four times a year, and the gap between visits is where people end up in the emergency room.</p>
+<p>So Medicare created a set of billing codes that pay a practice <em>monthly</em>, per patient, for care that happens between visits. There are two families of them, and together they are the entire business.</p>
+<p>The catch, and the reason this opportunity exists: collecting that money requires somebody to actually do the work every single month &mdash; call the patient, review their numbers, document it, and bill it correctly. A five-person practice has nobody spare to do that. So the money sits uncollected.</p>
+<p><strong>An enablement company supplies the missing piece.</strong> You provide the staff, the devices, the software, and the billing discipline. The practice bills Medicare as it always would, and pays you a fixed monthly fee per patient for the service you provided. The practice keeps the difference.</p>
+<p>That is the whole model. Everything below is detail.</p>
+</div>
+
+<div class="figures">
+  <div class="fig"><div class="v">~4%</div><div class="k">Of eligible Medicare patients get chronic care management</div></div>
+  <div class="fig"><div class="v">30&ndash;35%</div><div class="k">Enroll when a practice actually works at it</div></div>
+  <div class="fig"><div class="v">$170</div><div class="k">Monthly Medicare revenue per fully enrolled patient</div></div>
+  <div class="fig"><div class="v">$536M</div><div class="k">Medicare RPM payments in 2024, up 31%</div></div>
+</div>
+
+<h2 id="programs">02 &nbsp;The two programs</h2>
+<div class="band">
+<h3>Chronic Care Management (CCM)</h3>
+<p>For patients with <strong>two or more chronic conditions</strong> expected to last at least a year &mdash; diabetes, hypertension, heart failure, COPD, arthritis, depression. That describes an enormous share of any Medicare panel.</p>
+<p>The practice must provide at least <strong>20 minutes per month of non-face-to-face care coordination</strong>: a phone call to check how they are doing, medication reconciliation, following up on whether they saw the specialist, updating a care plan. It is a nurse or medical assistant on the phone, essentially.</p>
+<p><strong>No equipment is involved.</strong> Remember that &mdash; it becomes the most important fact in this memo.</p>
+
+<h3>Remote Patient Monitoring (RPM)</h3>
+<p>The patient gets a device that transmits readings automatically &mdash; a blood pressure cuff, a glucometer, a weight scale. The good ones are cellular, so there is no app, no Wi-Fi setup, and no fighting with an 80-year-old's phone. Readings flow to a dashboard; when something looks wrong, somebody calls.</p>
+<p>To bill, you generally need readings on <strong>at least 16 days in a month</strong> plus <strong>20 minutes of clinical time</strong>. Those two thresholds are exactly what made RPM impractical for small practices &mdash; miss either and you bill nothing at all, having already paid for the device.</p>
+
+<div class="note money">
+  <span class="label">What changed in 2026</span>
+  <p>The 2026 Medicare Physician Fee Schedule created two new codes that break both thresholds. <code>99445</code> pays for device supply at only <strong>2&ndash;15 days</strong> of readings, and <code>99470</code> pays for <strong>10&ndash;20 minutes</strong> of management time. A practice no longer has to hit the full bar to be paid something.</p>
+  <p>That is the specific reason this is worth doing now rather than three years ago. CMS removed the barrier for exactly the segment you can reach.</p>
+</div>
+</div>
+
+<h2 id="money">03 &nbsp;Where the money actually comes from</h2>
+<div class="band">
+<p>These are 2026 national averages; actual amounts vary by geographic locality by a few percent.</p>
+</div>
+
+<div class="scroller band">
+<table>
+  <caption>The codes that matter</caption>
+  <thead><tr><th>Code</th><th>What it pays for</th><th class="num">Amount</th><th>Frequency</th></tr></thead>
+  <tbody>
+    <tr><td><code>99453</code></td><td>Setting the patient up on a device, teaching them to use it</td><td class="num">$22</td><td>Once, per patient</td></tr>
+    <tr><td><code>99454</code></td><td>Device supply and data transmission, 16&ndash;30 days</td><td class="num">$52.11</td><td>Monthly</td></tr>
+    <tr><td><code>99445</code></td><td>Device supply, 2&ndash;15 days &mdash; <strong>new in 2026</strong></td><td class="num">$52.11</td><td>Monthly</td></tr>
+    <tr><td><code>99457</code></td><td>First 20 minutes of monitoring and patient contact</td><td class="num">$51.77</td><td>Monthly</td></tr>
+    <tr><td><code>99470</code></td><td>First 10&ndash;20 minutes &mdash; <strong>new in 2026</strong></td><td class="num">$26.05</td><td>Monthly</td></tr>
+    <tr><td><code>99458</code></td><td>Each additional 20 minutes of monitoring</td><td class="num">$41.00</td><td>Monthly</td></tr>
+    <tr><td><code>99490</code></td><td>First 20 minutes of chronic care management</td><td class="num">$66.13</td><td>Monthly</td></tr>
+    <tr><td><code>99439</code></td><td>Each additional 20 minutes of care management</td><td class="num">$50.44</td><td>Monthly</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="band">
+<p>A patient enrolled in both programs, where the clinical time is genuinely separate and separately documented, generates roughly:</p>
+</div>
+
+<div class="scroller band">
+<table>
+  <caption>One fully enrolled patient, per month</caption>
+  <thead><tr><th>Component</th><th class="num">Amount</th></tr></thead>
+  <tbody>
+    <tr><td>Device supply (99454)</td><td class="num">$52.11</td></tr>
+    <tr><td>RPM management time (99457)</td><td class="num">$51.77</td></tr>
+    <tr><td>Chronic care management (99490)</td><td class="num">$66.13</td></tr>
+    <tr class="total"><td>Practice bills Medicare</td><td class="num">$170.01</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="band">
+<div class="note warn">
+  <span class="label">Do not skip this</span>
+  <p>RPM and CCM can be billed in the same month <strong>only if the time is genuinely distinct and separately documented.</strong> You cannot count the same twenty-minute phone call twice. Practices that blur this are exactly what federal auditors look for, and the documentation discipline to keep them separate is part of what a practice is paying you for.</p>
+</div>
+</div>
+
+<h2 id="roles">04 &nbsp;Who does what</h2>
+<div class="band">
+<p>The division of labor is what makes this legal and what makes it work.</p>
+</div>
+
+<div class="scroller band">
+<table>
+  <caption>Division of responsibility</caption>
+  <thead><tr><th>The practice</th><th>You</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>Owns the patient relationship. Orders the service. Supervises clinically. Submits the claim to Medicare under its own billing number. Receives the payment.</td>
+      <td>Identifies eligible patients. Runs enrollment outreach. Supplies devices and platform. Employs the clinical staff who deliver the monthly time. Documents everything. Hands the practice a clean, billable file each month.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="band">
+<p><strong>You never bill Medicare.</strong> That is important and worth repeating &mdash; the practice bills, because the practice has the relationship with the patient and the physician is supervising. You are a vendor providing staff and services to the practice, and the practice pays you.</p>
+<p><strong>Can your staff legally do the clinical work?</strong> Yes, and this is the legal mechanism the whole industry rests on. CMS permits the monitoring codes to be furnished by <strong>clinical staff under general supervision</strong> &mdash; meaning the supervising physician does not need to be in the building or even reachable in real time. Since 2020, these codes moved from direct to general supervision specifically to make this workable.</p>
+<p>What that requires: your staff must be qualified clinical personnel under your state's rules, functioning as the practice's auxiliary personnel under a written arrangement. This is standard and every enablement company does it. It is also not something to improvise &mdash; your attorney papers it.</p>
+
+<div class="note warn">
+  <span class="label">What you personally cannot do</span>
+  <p>You are not clinical, so <strong>you cannot perform the billable minutes.</strong> Enrollment calls, scheduling, logistics, documentation support, and running the business are all yours. The twenty minutes that generates the money must come from qualified clinical staff. Your first hire is a nurse, and there is no way around it.</p>
+</div>
+</div>
+
+<h2 id="legal">05 &nbsp;The legal structure, and a trap I nearly walked you into</h2>
+<div class="band">
+<p>In my first summary I described the industry norm as a <strong>"70/30 or 80/20 revenue share."</strong> That language is all over vendor marketing. It is also the structure most likely to get you in trouble, and I should not have repeated it without checking.</p>
+<p>Paying or receiving a <strong>percentage of the revenue generated from federally reimbursed services</strong> is a classic Anti-Kickback Statute problem. Contracts that compensate a party as a percentage of collections are structurally incompatible with AKS safe harbors, and OIG advisory opinions have long treated percentage-of-revenue arrangements as suspect. Many states layer their own fee-splitting prohibitions on top, which bar a physician from paying a third party a percentage of practice revenue at all.</p>
+<p>The consequences are not theoretical: civil and criminal penalties, exclusion from Medicare, and for the physician, professional discipline.</p>
+
+<div class="note money">
+  <span class="label">The compliant structure</span>
+  <p><strong>A flat fee, per enrolled patient, per month, set at fair market value for the services you actually provide.</strong> Not a percentage of anything. Say $55 per patient per month for full service &mdash; devices, platform, clinical staffing, documentation.</p>
+  <p>This is why the real market prices at <strong>$40&ndash;80 per patient per month</strong> rather than as a split. Get this right in your first contract and every one after inherits it. Get it wrong and every contract you have ever signed is a problem.</p>
+</div>
+
+<p>Two more structural requirements your attorney will handle, listed so you know to ask:</p>
+<ul>
+  <li><strong>Fair market value and commercial reasonableness.</strong> The fee must be defensible as what the service is genuinely worth, documented at the time you set it.</li>
+  <li><strong>A written services agreement plus a BAA.</strong> You are handling patient health information, so the same business associate obligations from the last memo apply here in full.</li>
+</ul>
+<p>Budget $3,000&ndash;7,000 for a healthcare attorney to paper the first arrangement. This is not the place to economize. It is a one-time cost that every subsequent contract reuses.</p>
+</div>
+
+<h2 id="unit">06 &nbsp;Real unit economics &mdash; correcting my own numbers</h2>
+<div class="band">
+<p>In my summary I said a 200-patient practice is worth <strong>$96,000&ndash;192,000 a year to you.</strong> That figure was <em>revenue</em>, and I presented it in a way that implied something closer to profit. This is a services business with real cost of delivery, and the difference matters enormously.</p>
+<p>Here is the honest version.</p>
+</div>
+
+<div class="scroller band">
+<table>
+  <caption>Per patient, per month &mdash; your side of the ledger</caption>
+  <thead><tr><th>Line</th><th class="num">Amount</th><th>Basis</th></tr></thead>
+  <tbody>
+    <tr><td>You charge the practice</td><td class="num">$55.00</td><td>Flat fee, full service, mid-market</td></tr>
+    <tr><td>Clinical staff time</td><td class="num">&ndash;$18.00</td><td>~40 min/patient at a loaded rate; one coordinator per ~250 patients</td></tr>
+    <tr><td>Device (rented, amortised)</td><td class="num">&ndash;$12.00</td><td>Cellular device as a service rather than purchased</td></tr>
+    <tr><td>Platform and connectivity</td><td class="num">&ndash;$8.00</td><td>White-labelled, per active patient</td></tr>
+    <tr class="total"><td>Gross profit per patient</td><td class="num">$17.00</td><td>~31% gross margin</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="scroller band">
+<table>
+  <caption>One practice with 200 enrolled patients</caption>
+  <thead><tr><th></th><th class="num">Monthly</th><th class="num">Annual</th></tr></thead>
+  <tbody>
+    <tr><td>Revenue to you</td><td class="num">$11,000</td><td class="num">$132,000</td></tr>
+    <tr><td>Cost of delivery</td><td class="num">$7,600</td><td class="num">$91,200</td></tr>
+    <tr class="total"><td>Gross profit</td><td class="num">$3,400</td><td class="num">$40,800</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="band">
+<p><strong>$40,800 of gross profit per practice per year</strong> &mdash; before your own overhead, and still roughly three times what an entire underpayment client was worth in <em>revenue</em>. The model holds. It is just not a software margin, and you should never plan as though it is.</p>
+
+<h3>The one lever that changes everything</h3>
+<p>Staff cost is your largest expense and the only one you meaningfully control. The ratio is roughly <strong>one care coordinator per 250 patients</strong> at 40 minutes each. Push that to 350&ndash;400 through better tooling &mdash; AI drafting the documentation, pre-triaging abnormal readings, preparing the coordinator's call list so they spend their time talking rather than typing &mdash; and staff cost falls from $18 to about $12.</p>
+<p>Gross margin moves from 31% to roughly 42%. On 4,000 patients that is the difference between $816,000 and $1.1M of gross profit.</p>
+<p>Note carefully what the technology is doing there. It is <strong>not replacing the human contact</strong> &mdash; that contact is the billable service and the clinical value. It removes the administrative weight around it. That distinction is both the ethical line and the compliance line.</p>
+</div>
+
+<h2 id="sequence">07 &nbsp;Start with CCM. Do not start with devices.</h2>
+<div class="band">
+<p>The single most useful conclusion in this memo.</p>
+<p>RPM has a working capital problem you cannot survive. Devices cost <strong>$120&ndash;350 per patient</strong>, and you pay for them months before revenue arrives. Two hundred patients is $24,000&ndash;70,000 of hardware. With no capital, that is a wall you hit in week three.</p>
+<p><strong>CCM has no hardware at all.</strong> It is a phone call and documentation. Same patients, same practices, same relationship, same monthly recurring structure &mdash; and $66.13 per patient per month with essentially zero capital requirement.</p>
+</div>
+
+<div class="scroller band">
+<table>
+  <caption>Why the order matters</caption>
+  <thead><tr><th></th><th>CCM first</th><th>RPM first</th></tr></thead>
+  <tbody>
+    <tr><td>Capital needed for 200 patients</td><td>$0 hardware</td><td>$24,000&ndash;70,000</td></tr>
+    <tr><td>Time to first revenue</td><td>~6 weeks</td><td>~12 weeks</td></tr>
+    <tr><td>Revenue per patient/month</td><td>$66</td><td>$104</td></tr>
+    <tr><td>What can go wrong</td><td>Enrollment is slow</td><td>Devices arrive, patients never use them, you have paid and cannot bill</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="band">
+<p>So: <strong>launch CCM-only, get to cash-flow positive, then layer RPM onto the same patients</strong> once you can fund devices from operations. The second sale is trivially easy because you are already inside the practice with a track record, and every existing CCM patient is an RPM candidate.</p>
+<p>This sequencing turns a business that needs $60,000 you do not have into one that needs perhaps $15,000 &mdash; which is the difference between an idea and a thing you can actually start.</p>
+</div>
+
+<h2 id="need">08 &nbsp;What you actually need</h2>
+<div class="band">
+<h3>People</h3>
+<ul>
+  <li><strong>One care coordinator</strong> &mdash; RN, LPN, or experienced MA depending on your state's rules. Start part-time or contract; a coordinator can carry roughly 250 patients. Loaded cost $55,000&ndash;75,000 full time.</li>
+  <li><strong>You</strong> &mdash; enrollment outreach, practice relationships, operations, compliance, and everything that is not a billable clinical minute.</li>
+</ul>
+
+<h3>Systems</h3>
+<ul>
+  <li><strong>A white-labelled care management platform.</strong> Do not build this. Several vendors will private-label a platform with documentation, time tracking, and billing-ready exports. Time tracking is not optional &mdash; the minutes are the product and an auditor will ask to see them.</li>
+  <li><strong>Device partner</strong>, when you add RPM. Choose cellular devices with no app and no Wi-Fi pairing; setup friction is the main reason elderly patients drop out.</li>
+</ul>
+
+<h3>Legal and administrative</h3>
+<ul>
+  <li>LLC, formed before any contract is signed</li>
+  <li>Services agreement and BAA, drafted by a healthcare attorney &mdash; $3,000&ndash;7,000</li>
+  <li>Professional and cyber liability insurance &mdash; $2,000&ndash;5,000/year</li>
+  <li>A written compliance program. Not optional in this category; see below.</li>
+</ul>
+
+<h3>Money</h3>
+</div>
+
+<div class="scroller band">
+<table>
+  <caption>Realistic startup capital, CCM-first</caption>
+  <thead><tr><th>Item</th><th class="num">Amount</th></tr></thead>
+  <tbody>
+    <tr><td>Legal &mdash; entity, services agreement, BAA, compliance program</td><td class="num">$5,000</td></tr>
+    <tr><td>Insurance, first year</td><td class="num">$3,000</td></tr>
+    <tr><td>Platform, first six months</td><td class="num">$3,000</td></tr>
+    <tr><td>Coordinator wages before revenue catches up (~3 months part-time)</td><td class="num">$9,000</td></tr>
+    <tr><td>Working capital buffer</td><td class="num">$5,000</td></tr>
+    <tr class="total"><td>Total to launch</td><td class="num">$25,000</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="band">
+<div class="note warn">
+  <span class="label">The honest constraint</span>
+  <p>You have told me you have no capital. <strong>$25,000 is the real number to start this properly</strong>, and pretending otherwise would be the same failure as the last idea. The paths are: fund it from the underpayment work, take a loan against contracted revenue once the first practice signs, find a clinical co-founder who takes equity instead of wages, or have your first practice pay a setup fee.</p>
+  <p>That last one is more available than it sounds. A practice that understands it is about to add $170 per patient per month will often fund the setup, because their payback is measured in weeks.</p>
+</div>
+</div>
+
+<h2 id="projections">09 &nbsp;Financial projections</h2>
+<div class="band">
+<p>Built CCM-first, adding RPM from month nine. The binding constraint throughout is not demand &mdash; it is enrollment speed and coordinator hiring.</p>
+</div>
+
+<div class="scroller band">
+<table>
+  <caption>Base case</caption>
+  <thead><tr>
+    <th>Period</th><th class="num">Practices</th><th class="num">Patients</th>
+    <th class="num">Avg $/pt/mo</th><th class="num">Revenue</th><th class="num">Gross profit</th>
+  </tr></thead>
+  <tbody>
+    <tr><td>Y1 Q1</td><td class="num">1</td><td class="num">40</td><td class="num">$38</td><td class="num">$4,560</td><td class="num">$1,400</td></tr>
+    <tr><td>Y1 Q2</td><td class="num">2</td><td class="num">140</td><td class="num">$38</td><td class="num">$15,960</td><td class="num">$5,000</td></tr>
+    <tr><td>Y1 Q3</td><td class="num">3</td><td class="num">320</td><td class="num">$46</td><td class="num">$44,160</td><td class="num">$14,700</td></tr>
+    <tr><td>Y1 Q4</td><td class="num">5</td><td class="num">560</td><td class="num">$52</td><td class="num">$87,360</td><td class="num">$29,700</td></tr>
+    <tr class="total"><td>Year 1</td><td class="num">5</td><td class="num">560</td><td class="num">&mdash;</td><td class="num">$152,040</td><td class="num">$50,800</td></tr>
+    <tr><td>Year 2</td><td class="num">14</td><td class="num">2,100</td><td class="num">$55</td><td class="num">$1,039,500</td><td class="num">$395,000</td></tr>
+    <tr><td>Year 3</td><td class="num">30</td><td class="num">5,400</td><td class="num">$55</td><td class="num">$3,564,000</td><td class="num">$1,461,000</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="scroller band">
+<table>
+  <caption>Three cases, revenue</caption>
+  <thead><tr><th>Case</th><th class="num">Year 1</th><th class="num">Year 2</th><th class="num">Year 3</th><th>Assumes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Bear</strong></td><td class="num">$58k</td><td class="num">$390k</td><td class="num">$1.1M</td><td>Enrollment stalls near 15%; two practices churn; hiring lags</td></tr>
+    <tr><td><strong>Base</strong></td><td class="num">$152k</td><td class="num">$1.04M</td><td class="num">$3.56M</td><td>~25% enrollment; 5 practices year one; coordinator hiring keeps pace</td></tr>
+    <tr><td><strong>Bull</strong></td><td class="num">$240k</td><td class="num">$1.9M</td><td class="num">$6.2M</td><td>One multi-site group or IPA brings 8+ practices in a single contract</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="band">
+<p><strong>$10M of revenue requires roughly 15,000 enrolled patients across 60&ndash;80 practices.</strong> At the base-case trajectory that is year five or six. It is genuinely reachable, which was never true of the last idea &mdash; but it is a five-year build, not a two-year one.</p>
+
+<div class="note warn">
+  <span class="label">Where these break</span>
+  <p><strong>Enrollment rate is the whole model.</strong> Every number above moves proportionally with it. At 30&ndash;35% these projections hold; at 15% you have the bear case and a business that struggles to pay a coordinator.</p>
+  <p><strong>Hiring is the second constraint.</strong> Every 250 patients needs another coordinator, and you are hiring clinical staff in the tightest healthcare labor market in decades. Year three assumes you have hired and retained roughly twenty of them, which is a real management job you have not done before.</p>
+  <p><strong>And these assume you solve the $25,000.</strong> Year one is negative on cash for the first two quarters regardless of how the revenue line looks.</p>
+</div>
+</div>
+
+<h2 id="compliance">10 &nbsp;Compliance is a feature, not overhead</h2>
+<div class="band">
+<p>The HHS Office of Inspector General has flagged remote monitoring as vulnerable to improper billing and announced audits of Medicare Part B RPM claims. Payments reached <strong>$536 million in 2024, up 31% year over year</strong>, with nearly a million beneficiaries &mdash; growth that fast always draws attention.</p>
+<p>Read the named abuse patterns closely, because they tell you exactly what not to be:</p>
+<ul>
+  <li>Companies making unsolicited contact with beneficiaries and enrolling them in monitoring that never happens</li>
+  <li>Shipping devices without having enough staff to actually monitor them</li>
+  <li>Billing patterns that omit components &mdash; charging for device supply but never for management time, which suggests nobody ever looked at the data</li>
+</ul>
+<p>Every one of those is a business that took the money without doing the work. If you actually do the work, you are not the target &mdash; and enforcement is steadily removing the operators who cut corners, which is a tailwind for anyone who does not.</p>
+
+<h4>What a defensible program looks like</h4>
+<ul>
+  <li><strong>Documented consent</strong> before enrollment, and a genuinely easy way to stop</li>
+  <li><strong>Time tracking to the minute</strong>, tied to a named staff member, retained and auditable</li>
+  <li><strong>Never bill a component you did not deliver.</strong> If a patient did not transmit and nobody spoke to them, that month is not billable. It will happen; write it off and move on.</li>
+  <li><strong>Flat fees, never percentages</strong> &mdash; per the structure section above</li>
+  <li><strong>An annual internal audit</strong> where you sample your own months and check them as an auditor would</li>
+</ul>
+<p>Budget the compliance program as a real line item. It is also, straightforwardly, a sales asset: a practice administrator deciding whether to let an outside company touch their Medicare billing is asking exactly one question, and a written compliance program answers it.</p>
+</div>
+
+<h2 id="enrollment">11 &nbsp;Enrollment is the actual job</h2>
+<div class="band">
+<p>Everything else here is arithmetic. This is the part that decides whether the business works.</p>
+<p>Patients must consent to enrol. Practices running structured outreach reach <strong>30&ndash;35%</strong> of eligible patients; practices without it reach almost nobody. The national CCM figure sits near <strong>4%</strong>, which is the entire opportunity expressed as one number.</p>
+
+<h4>What actually moves the rate</h4>
+<ul>
+  <li><strong>The physician introduces it, not you.</strong> "My office is starting a program to check in with you monthly between visits &mdash; is that alright?" from a trusted doctor converts several times better than a cold call from a company the patient has never heard of.</li>
+  <li><strong>Enrol in the room</strong>, at the end of a visit, while the physician's recommendation is still fresh. Enrolment at the exam room door beats a phone call every time.</li>
+  <li><strong>Lead with the care, not the technology.</strong> Nobody over 70 wants a monitoring platform. They want someone to call and check on them.</li>
+  <li><strong>Be honest about cost.</strong> CCM carries Medicare coinsurance &mdash; typically around $13 a month unless the patient has supplemental coverage. Hiding it produces angry cancellations in month two. Say it plainly and enrol fewer people who stay.</li>
+</ul>
+
+<div class="note">
+  <span class="label">The metric to run the company on</span>
+  <p>Not revenue. <strong>Enrolled patients per practice, and monthly retention.</strong> Everything else follows from those two, and if you only get to look at one number each week, look at enrolment.</p>
+</div>
+</div>
+
+<h2 id="competition">12 &nbsp;Who else is doing this</h2>
+<div class="band">
+<p>HealthSnap raised $25M. Prevounce, Medsien, ThoroughCare, CareSimple, ChartSpan, Esrun, Signallamp, CircleLink and dozens more are active. It is a busy category.</p>
+<p>It is also genuinely fragmented, and nobody is close to dominant, for a structural reason: <strong>this is a service delivered by humans to elderly patients on behalf of physicians who must trust you.</strong> Capital buys marketing and engineering; it does not buy a cardiologist's confidence that your nurse will actually call his patient on Thursday.</p>
+<p>Where a newcomer wins:</p>
+<ul>
+  <li><strong>Specialty depth.</strong> Most vendors are generalists chasing primary care. A company that genuinely understands cardiology panels &mdash; which patients matter, which readings are alarming, what a cardiologist wants escalated &mdash; is a different product to that buyer. Your network gives you that specificity for free.</li>
+  <li><strong>Local density.</strong> Referrals in medicine travel through geography and specialty. Twenty practices in one metro is a better business than twenty scattered nationally, and easier to staff.</li>
+  <li><strong>Actually answering the phone.</strong> The most common complaint about the funded vendors is that support degrades as they scale. That is a real, if unglamorous, wedge.</li>
+</ul>
+</div>
+
+<h2 id="gtm">13 &nbsp;Go to market</h2>
+<div class="band">
+<div class="phase">
+  <div class="when">Practice 1</div>
+  <div class="what"><h4>Someone who already trusts you</h4>
+  <p>Ideally a network practice with a large Medicare panel &mdash; cardiology, endocrinology, nephrology, or primary care. Your father's practice can work, though a solo practitioner near retirement has a smaller panel and less appetite for a new program. Better to use him for the introduction than as the pilot.</p></div>
+</div>
+<div class="phase">
+  <div class="when">Practices 2&ndash;5</div>
+  <div class="what"><h4>One specialty, one metro</h4>
+  <p>Resist the urge to take every practice that says yes. Depth in one specialty makes your clinical protocols reusable and your coordinators genuinely expert. Geographic density makes staffing and in-office enrollment days possible.</p></div>
+</div>
+<div class="phase">
+  <div class="when">Practices 6&ndash;20</div>
+  <div class="what"><h4>Referral and proof</h4>
+  <p>By now you have a number: "we enrolled 180 of Dr. X's patients and his practice collected $340,000 last year." That sentence, from a colleague, is the entire sales process in this market. Independent physician associations and specialty societies become reachable at this stage.</p></div>
+</div>
+<div class="phase">
+  <div class="when">Beyond</div>
+  <div class="what"><h4>Groups, IPAs, and MSOs</h4>
+  <p>One contract with a 12-practice group is worth twelve sales. This is where the bull case comes from, and where the consolidation trend that killed the last idea works in your favour instead.</p></div>
+</div>
+</div>
+
+<div class="band">
+<div class="script">
+  <span class="who">The opening, to a physician</span>
+  <p>"Medicare pays about $66 a month per patient for chronic care management and you're not billing it, because nobody in your office has twenty minutes a month per patient. We supply the nurse and the documentation; you supervise and bill it as you would anything else. On 200 of your patients that's about $158,000 a year to the practice, and it costs you $55 per patient per month. Can I show you the math on your own panel?"</p>
+</div>
+<p>Note what that pitch does: a specific number, an explicit cost, and a request to do arithmetic on their own patients rather than a demo. Same shape as the free audit from the last idea &mdash; specific, about them, and cheap for you to produce.</p>
+</div>
+
+<h2 id="fails">14 &nbsp;How this fails</h2>
+<div class="band">
+<p>In descending order of likelihood.</p>
+<ol>
+  <li><strong>Enrollment stalls.</strong> You sign three practices, enrol 12% of eligible patients, and the revenue never covers the coordinator. This is the most common death and it is an execution failure, not a market one.</li>
+  <li><strong>You run out of cash in month four.</strong> Coordinator wages are due before enrollment ramps. The CCM-first sequencing exists specifically to shrink this window; it does not eliminate it.</li>
+  <li><strong>You cannot hire or keep coordinators.</strong> Clinical labor is scarce and this work is repetitive. High turnover destroys both quality and margin.</li>
+  <li><strong>A compliance failure.</strong> Sloppy documentation, a billed month where nobody made contact, an auditor. This one can end the business outright rather than merely hurt it.</li>
+  <li><strong>CMS changes the rules.</strong> Rates get cut, thresholds return, or OIG scrutiny produces restrictions. Less likely in the near term &mdash; the 2026 rules just expanded access &mdash; but this is Medicare-dependent revenue and that is a permanent structural risk. It is the same fragility that killed the CMMC idea, and you should size it honestly.</li>
+</ol>
+<p>Four of those five are within your control. That ratio is considerably better than most businesses, and it is the strongest argument for this one.</p>
+</div>
+
+<h2 id="ninety">15 &nbsp;The first ninety days</h2>
+<div class="band">
+<div class="phase">
+  <div class="when">Weeks 1&ndash;2</div>
+  <div class="what"><h4>Validate before you spend</h4>
+  <p>Talk to five physicians in your network. Ask two questions: do you bill CCM, and if not, why not. You are testing whether the pain is real before spending a dollar. If four of five say "we looked at it and couldn't staff it," you have your business.</p></div>
+</div>
+<div class="phase">
+  <div class="when">Weeks 3&ndash;5</div>
+  <div class="what"><h4>Structure</h4>
+  <p>Form the LLC. Engage a healthcare attorney for the services agreement, BAA, and compliance program. Select a white-label platform and negotiate per-patient pricing. Do not skip the attorney.</p></div>
+</div>
+<div class="phase">
+  <div class="when">Weeks 6&ndash;8</div>
+  <div class="what"><h4>First practice, first coordinator</h4>
+  <p>Sign practice one. Run their panel to count eligible patients. Hire a part-time coordinator &mdash; part-time is right, because you will not have volume for full-time for two months.</p></div>
+</div>
+<div class="phase">
+  <div class="when">Weeks 9&ndash;12</div>
+  <div class="what"><h4>Enrol, deliver, bill</h4>
+  <p>Run enrollment with the physician introducing it. Target 40&ndash;60 patients in month one. Deliver every minute you bill for. Get one clean billing cycle through and confirm the practice actually got paid.</p>
+  <p>That last step is the milestone that matters. Not signing a practice &mdash; a practice receiving money because of you.</p></div>
+</div>
+</div>
+
+<h2 id="glossary">16 &nbsp;Glossary</h2>
+<div class="band">
+<dl class="gloss">
+  <dt>CCM &mdash; Chronic Care Management</dt><dd>Monthly non-face-to-face care coordination for patients with two or more chronic conditions. 20 minutes minimum. No devices.</dd>
+  <dt>RPM &mdash; Remote Patient Monitoring</dt><dd>Patient uses a connected device at home; readings are reviewed and acted on. Requires devices and, traditionally, 16 days of data.</dd>
+  <dt>General supervision</dt><dd>The physician directs the service but need not be present or immediately reachable. The rule that lets your staff deliver billable time.</dd>
+  <dt>Incident to</dt><dd>Billing services delivered by auxiliary personnel under a physician's professional service. The mechanism the whole model rests on.</dd>
+  <dt>Auxiliary personnel</dt><dd>Clinical staff furnishing services under supervision. Your coordinators, functioning as the practice's staff by written arrangement.</dd>
+  <dt>Anti-Kickback Statute (AKS)</dt><dd>Federal law prohibiting payment for referrals of federally reimbursed services. The reason your fee is flat, not a percentage.</dd>
+  <dt>Fee splitting</dt><dd>State-law prohibition on a physician sharing practice revenue with a non-physician. Another reason for flat fees.</dd>
+  <dt>Fair market value</dt><dd>Compensation defensible as what a service is genuinely worth. Document how you set your price, when you set it.</dd>
+  <dt>Coinsurance</dt><dd>The patient's share, typically 20%. About $13/month for CCM unless they have supplemental coverage. Disclose it upfront.</dd>
+  <dt>Panel</dt><dd>A physician's roster of active patients. "Eligible panel" is how you size a practice before you sign it.</dd>
+  <dt>Physician Fee Schedule (PFS)</dt><dd>CMS's annual rate-setting rule. Published each autumn, effective January 1. Read it every year; it is your business model.</dd>
+</dl>
+</div>
+
+<footer>
+  <p>Prepared September 2026. Rates are 2026 national averages and vary by locality. Unit economics are modelled estimates to be replaced with observed figures after the first practice. Nothing here is legal, tax, or compliance advice &mdash; the services agreement, the fee structure, and the compliance program each require a healthcare attorney before the first contract is signed.</p>
+</footer>
+
+</main>
+</div>
