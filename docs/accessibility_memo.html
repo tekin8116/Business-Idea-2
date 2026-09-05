@@ -1,0 +1,496 @@
+<title>Three Thousand Broken Documents</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#FCFCFA; --surface:#F2F4F1; --raised:#FFFFFF;
+  --ink:#191D21; --ink-soft:#5A646C; --ink-faint:#8B949B;
+  --line:#DBDFDA; --line-soft:#E9ECE8;
+  --accent:#0E5A64; --accent-ink:#0A464E; --accent-wash:#E2EDEE;
+  --money:#1C6244; --money-wash:#E4EFE9;
+  --alert:#94461A; --alert-wash:#F7E9E0;
+  --measure:69ch;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#121618; --surface:#1A2023; --raised:#1E262A;
+    --ink:#E9EBE8; --ink-soft:#9BA5AB; --ink-faint:#77828A;
+    --line:#2B3337; --line-soft:#232B2F;
+    --accent:#57B6C2; --accent-ink:#8ACFD8; --accent-wash:#153136;
+    --money:#5AAE84; --money-wash:#153024;
+    --alert:#D38A57; --alert-wash:#2E2118;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#121618; --surface:#1A2023; --raised:#1E262A;
+  --ink:#E9EBE8; --ink-soft:#9BA5AB; --ink-faint:#77828A;
+  --line:#2B3337; --line-soft:#232B2F;
+  --accent:#57B6C2; --accent-ink:#8ACFD8; --accent-wash:#153136;
+  --money:#5AAE84; --money-wash:#153024;
+  --alert:#D38A57; --alert-wash:#2E2118;
+}
+*{box-sizing:border-box}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Source Serif 4","Iowan Old Style",Georgia,serif;
+  font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased}
+.shell{display:grid; grid-template-columns:1fr; max-width:1240px; margin:0 auto; padding:0 24px}
+@media(min-width:1060px){.shell{grid-template-columns:236px minmax(0,1fr); gap:56px; padding:0 40px}}
+nav.toc{display:none}
+@media(min-width:1060px){
+  nav.toc{display:block; position:sticky; top:0; align-self:start; max-height:100vh;
+    overflow-y:auto; padding:56px 0 40px;
+    font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11.5px; line-height:1.5}
+  nav.toc ol{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px}
+  nav.toc a{color:var(--ink-soft); text-decoration:none; display:block;
+    border-left:2px solid var(--line); padding-left:11px}
+  nav.toc a:hover,nav.toc a:focus-visible{color:var(--accent); border-left-color:var(--accent)}
+  nav.toc .n{color:var(--ink-faint); margin-right:7px}
+  nav.toc .tochead{font-weight:600; letter-spacing:.11em; text-transform:uppercase;
+    color:var(--ink-faint); margin-bottom:16px; padding-left:13px}
+}
+main{padding:52px 0 100px; min-width:0}
+.band{max-width:var(--measure)}
+h1,h2,h3,h4{font-family:Archivo,"Helvetica Neue",Arial,sans-serif; text-wrap:balance; margin:0}
+h1{font-size:clamp(31px,4.6vw,44px); font-weight:700; line-height:1.1; letter-spacing:-.022em}
+h2{font-size:25px; font-weight:600; line-height:1.2; letter-spacing:-.013em;
+  margin:64px 0 6px; padding-top:26px; border-top:1px solid var(--line)}
+h3{font-size:18px; font-weight:600; margin:34px 0 4px; letter-spacing:-.006em}
+h4{font-size:14px; font-weight:600; margin:24px 0 2px}
+p{margin:14px 0}
+a{color:var(--accent); text-decoration-thickness:1px; text-underline-offset:2px}
+strong{font-weight:600}
+.eyebrow{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px; font-weight:600;
+  letter-spacing:.15em; text-transform:uppercase; color:var(--accent); margin:0 0 12px}
+.standfirst{font-size:20px; line-height:1.5; color:var(--ink-soft); margin:20px 0 0; max-width:62ch}
+.masthead{padding:56px 0 34px; border-bottom:3px solid var(--accent)}
+.meta{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11.5px;
+  color:var(--ink-faint); margin-top:26px; display:flex; flex-wrap:wrap; gap:6px 20px}
+ul,ol{margin:14px 0; padding-left:22px; max-width:var(--measure)}
+li{margin-bottom:8px}
+li::marker{color:var(--accent)}
+.scroller{overflow-x:auto; margin:22px 0; border:1px solid var(--line); border-radius:3px; background:var(--raised)}
+table{border-collapse:collapse; width:100%; font-size:14.5px; font-family:Archivo,sans-serif}
+caption{text-align:left; padding:13px 16px 0; font-family:"IBM Plex Mono",monospace;
+  font-size:11px; letter-spacing:.11em; text-transform:uppercase; color:var(--ink-faint)}
+th,td{padding:9px 16px; text-align:left; border-bottom:1px solid var(--line-soft); vertical-align:top}
+thead th{font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:600;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--ink-faint);
+  border-bottom:1px solid var(--line); white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.num,th.num{text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap;
+  font-family:"IBM Plex Mono",monospace; font-size:13px}
+tr.total td{border-top:2px solid var(--line); font-weight:600; background:var(--surface)}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.88em}
+code{background:var(--surface); padding:1px 5px; border-radius:2px; color:var(--accent-ink)}
+.note{border-left:3px solid var(--accent); background:var(--accent-wash);
+  padding:16px 20px; margin:24px 0; max-width:var(--measure); border-radius:0 3px 3px 0}
+.note.warn{border-left-color:var(--alert); background:var(--alert-wash)}
+.note.money{border-left-color:var(--money); background:var(--money-wash)}
+.note p:first-child{margin-top:0}
+.note p:last-child{margin-bottom:0}
+.note .label{font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:600;
+  letter-spacing:.13em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:7px}
+.note.warn .label{color:var(--alert)}
+.note.money .label{color:var(--money)}
+.figures{display:grid; grid-template-columns:repeat(auto-fit,minmax(148px,1fr)); gap:1px;
+  background:var(--line); border:1px solid var(--line); margin:26px 0}
+.fig{background:var(--ground); padding:16px 18px}
+.fig .v{font-family:Archivo,sans-serif; font-size:26px; font-weight:700; letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums; line-height:1.15}
+.fig .k{font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--ink-faint); margin-top:6px}
+.phase{display:flex; gap:18px; padding:18px 0; border-bottom:1px solid var(--line-soft); max-width:var(--measure)}
+.phase:last-child{border-bottom:none}
+.phase .when{font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:600;
+  letter-spacing:.06em; color:var(--accent); flex:0 0 104px; padding-top:4px; text-transform:uppercase}
+.phase .what{flex:1; min-width:0}
+.phase .what h4{margin-top:0}
+.phase .what p{margin:5px 0 0; font-size:15.5px; color:var(--ink-soft)}
+dl.gloss{max-width:var(--measure); margin:20px 0}
+dl.gloss dt{font-family:"IBM Plex Mono",monospace; font-size:13px; font-weight:600;
+  color:var(--accent-ink); margin-top:16px}
+dl.gloss dd{margin:3px 0 0; font-size:15.5px; color:var(--ink-soft)}
+.script{background:var(--surface); border:1px solid var(--line); border-radius:3px;
+  padding:16px 20px; margin:16px 0; max-width:var(--measure); font-size:16px}
+.script .who{font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:600;
+  letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); display:block; margin-bottom:8px}
+.script p{margin:9px 0; font-style:italic}
+footer{border-top:1px solid var(--line); margin-top:72px; padding:26px 0 0;
+  font-size:13.5px; color:var(--ink-faint); max-width:var(--measure)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+h2[id],h3[id]{scroll-margin-top:20px}
+</style>
+
+<div class="shell">
+<nav class="toc" aria-label="Contents">
+  <div class="tochead">Contents</div>
+  <ol>
+    <li><a href="#thesis"><span class="n">01</span>The thesis</a></li>
+    <li><a href="#rules"><span class="n">02</span>What the rules require</a></li>
+    <li><a href="#why"><span class="n">03</span>Why it isn't solved</a></li>
+    <li><a href="#overlay"><span class="n">04</span>The overlay disaster</a></li>
+    <li><a href="#product"><span class="n">05</span>What you sell</a></li>
+    <li><a href="#unit"><span class="n">06</span>Unit economics</a></li>
+    <li><a href="#tam"><span class="n">07</span>Market and segments</a></li>
+    <li><a href="#network"><span class="n">08</span>Your network's real role</a></li>
+    <li><a href="#gtm"><span class="n">09</span>Go to market</a></li>
+    <li><a href="#projections"><span class="n">10</span>Projections</a></li>
+    <li><a href="#liability"><span class="n">11</span>Liability</a></li>
+    <li><a href="#risk"><span class="n">12</span>The deadline risk</a></li>
+    <li><a href="#competition"><span class="n">13</span>Competition</a></li>
+    <li><a href="#ninety"><span class="n">14</span>First 90 days</a></li>
+    <li><a href="#glossary"><span class="n">15</span>Glossary</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="masthead band">
+  <p class="eyebrow">Operating memo &middot; Third of three</p>
+  <h1>Three Thousand Broken Documents</h1>
+  <p class="standfirst">Every city, school district and hospital in America is legally required to make its documents readable by blind users, on a dated deadline, and none of them has counted how many documents they have. Counting is free. Fixing is the business.</p>
+  <div class="meta">
+    <span>September 2026</span><span>Deadlines verified current</span><span>Third and strongest of the three</span>
+  </div>
+</header>
+
+<h2 id="thesis">01 &nbsp;The thesis</h2>
+<div class="band">
+<p>Two federal rules require that web content and electronic documents meet a technical accessibility standard &mdash; WCAG 2.1 Level AA &mdash; by dated deadlines in 2027 and 2028. Together they cover essentially every unit of state and local government in the United States and essentially every healthcare organization that takes federal money.</p>
+<p>Nearly all of the attention has gone to websites. But the rules cover <strong>documents</strong>, and that is where the real exposure sits: every city has thousands of PDFs on its site &mdash; board packets, budgets, minutes, permit applications, newsletters &mdash; and a large share of them are scanned images that a screen reader reads as a blank page.</p>
+<p>Nobody has counted them. So nobody knows whether they have a $4,000 problem or a $180,000 one.</p>
+<p><strong>You count them for free, then fix them for money.</strong> The counting is a crawler and costs you pennies. The fixing is a hybrid of automated tooling and trained human review, at roughly 74% gross margin. And because these organizations publish new documents every month forever, the backlog is a project and the flow is a subscription.</p>
+</div>
+
+<div class="figures">
+  <div class="fig"><div class="v">90,837</div><div class="k">Local governments covered</div></div>
+  <div class="fig"><div class="v">Apr 2027</div><div class="k">First hard deadline</div></div>
+  <div class="fig"><div class="v">$5&ndash;25</div><div class="k">Market rate per page, manual</div></div>
+  <div class="fig"><div class="v">~74%</div><div class="k">Gross margin, hybrid delivery</div></div>
+</div>
+
+<h2 id="rules">02 &nbsp;What the rules actually require</h2>
+<div class="band">
+<p>Two separate rules, two agencies, overlapping populations. Both were extended by exactly one year in spring 2026 &mdash; a fact that matters and gets its own section later.</p>
+</div>
+
+<div class="scroller band">
+<table>
+  <caption>Current compliance dates, verified September 2026</caption>
+  <thead><tr><th>Rule</th><th>Who it covers</th><th>Deadline</th></tr></thead>
+  <tbody>
+    <tr><td rowspan="2"><strong>DOJ ADA Title II</strong></td><td>State and local entities serving 50,000+</td><td><strong>April 26, 2027</strong></td></tr>
+    <tr><td>Under 50,000, and <em>all</em> special districts regardless of size</td><td>April 26, 2028</td></tr>
+    <tr><td rowspan="2"><strong>HHS Section 504</strong></td><td>Recipients of HHS funding, 15+ employees</td><td><strong>May 11, 2027</strong></td></tr>
+    <tr><td>Recipients with fewer than 15 employees</td><td>May 10, 2028</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="band">
+<p><strong>The standard is WCAG 2.1 Level AA</strong>, which covers documents as well as pages. For a PDF that means a real text layer rather than a scanned image, correct tagging, a sensible reading order, meaningful alternative text on images, and properly identified table headers.</p>
+<p>Coverage on the healthcare side is broader than people assume. OCR has clarified that <strong>Medicare Part B reimbursement alone triggers Section 504 coverage</strong>, which sweeps in essentially every physician practice that bills Medicare, alongside hospitals, health systems, community health centers, and medical schools. Scope explicitly includes patient portals, telehealth platforms and mobile apps, including those supplied by third-party vendors.</p>
+
+<div class="note">
+  <span class="label">The detail that makes this durable</span>
+  <p>The deadlines govern conformance to the <em>technical standard</em>. The broader legal obligation not to discriminate in digitally delivered programs and services <strong>has been in force since July 8, 2024</strong>, and the ADA itself has applied to web content for years. Private plaintiffs do not wait for compliance dates.</p>
+  <p>That is the structural difference from the CMMC idea, where suspending the program removed the obligation entirely. Here, moving the deadline delays the enforcement trigger but not the underlying duty.</p>
+</div>
+</div>
+
+<h2 id="why">03 &nbsp;Why this hasn't already been solved</h2>
+<div class="band">
+<p>The most useful sentence in this entire research effort came from DOJ itself. Explaining why it extended the deadline, the Department cited compliance resource constraints and <strong>"the limits of current technology, including generative AI, to automate accessibility remediation at scale."</strong></p>
+<p>Read that carefully, because it is doing two things at once.</p>
+<p><strong>It confirms the opportunity.</strong> The federal government studied this problem and concluded that organizations cannot get there with the tools available. That is a regulator describing an unmet service need in writing.</p>
+<p><strong>And it is a warning.</strong> If full automation were possible, someone would have shipped it and this business would not exist. Anyone promising one-click compliance is either wrong or lying &mdash; and one of them has already been fined for it.</p>
+
+<h3>What organizations are actually doing about it</h3>
+<ul>
+  <li><strong>Mostly nothing.</strong> The single most common state. They know about the website; they have not thought about documents; nobody has counted.</li>
+  <li><strong>Fixing the website only.</strong> Their web vendor updates the templates and colour contrast and declares victory. The document library is untouched, because the web vendor does not do documents.</li>
+  <li><strong>Buying an overlay.</strong> The worst outcome, covered next.</li>
+  <li><strong>Hiring manual remediation.</strong> Correct and unaffordable at $5&ndash;25 per page &mdash; $40&ndash;60 for complex scanned documents. A 30,000 page backlog is a $300,000 line item that no city council approves.</li>
+</ul>
+<p>The gap between "we should do something" and "we can afford to do it" is the entire commercial space.</p>
+</div>
+
+<h2 id="overlay">04 &nbsp;The overlay disaster, and why it helps you</h2>
+<div class="band">
+<p>For several years the dominant answer was an overlay: a JavaScript widget that claims to detect and fix accessibility problems automatically at page load.</p>
+<p>In January 2025 the FTC fined <strong>accessiBe $1 million</strong> for deceptive marketing, finding that its claim the product would "automatically comply" with WCAG 2.1 AA was not supported by competent and reliable evidence. The order bars the company from making such claims without support. Meanwhile <strong>over 800 businesses using overlay widgets were sued anyway</strong>, and courts have consistently declined to treat overlay installation as evidence of compliance.</p>
+
+<div class="note warn">
+  <span class="label">Two consequences for you</span>
+  <p><strong>Never build or resell one.</strong> Not on ethics alone &mdash; on the fact that the FTC has already established the theory of liability.</p>
+  <p><strong>Expect hostility to anything that sounds automated.</strong> Buyers in this market have been burned publicly and expensively. When your pitch mentions AI, a knowledgeable buyer's first instinct is suspicion. That is a marketing headwind and, handled honestly, your sharpest differentiator: you are the vendor who explains exactly which parts are automated, which parts a human checks, and what you will not claim.</p>
+</div>
+</div>
+
+<h2 id="product">05 &nbsp;What you actually sell</h2>
+<div class="band">
+<p>The most important strategic correction to my original framing: <strong>you are not building software.</strong> The remediation tooling already exists and is inexpensive &mdash; PDFix Desktop does AI-assisted tagging with batch scripting for around $599 a year, and Equidox, CommonLook, Continual Engine and PREP all do batch remediation.</p>
+<p>A city clerk does not want to buy tagging software, learn the PDF/UA specification, and remediate three thousand board packets. They want to hand over a folder and get compliant documents back.</p>
+<p>So the business has three layers, and only the first is yours to build.</p>
+</div>
+
+<div class="band">
+<div class="phase">
+  <div class="when">Layer 1</div>
+  <div class="what"><h4>The inventory &mdash; your lead generation engine</h4>
+  <p>A crawler enumerates every page and document on a domain, tests each PDF for a text layer, tagging, reading order, alt text and table headers, then produces a branded report: total documents, how many fail, how many are image-only, estimated page count, and a cost range at market rates. Runs unattended against a list of a thousand entities overnight. This is the only part you build, and it costs pennies per prospect.</p></div>
+</div>
+<div class="phase">
+  <div class="when">Layer 2</div>
+  <div class="what"><h4>Production &mdash; licensed tooling</h4>
+  <p>Automated tagging handles roughly 95% of the structural work and cuts manual effort by about 80%, at a tool cost of $0.10&ndash;0.50 per page. You buy this, you do not build it.</p></div>
+</div>
+<div class="phase">
+  <div class="when">Layer 3</div>
+  <div class="what"><h4>Quality &mdash; trained human review</h4>
+  <p>The three things machines still get wrong: reading order, whether alt text actually conveys meaning, and semantic tag correctness. Plus validation against PDF/UA before delivery.</p>
+  <p><strong>This is a trainable skill, not a licensed profession.</strong> That distinction is why this business passes a filter that remote patient monitoring failed &mdash; you are hiring and training reviewers, not recruiting and retaining nurses.</p></div>
+</div>
+</div>
+
+<div class="band">
+<h3>And then it recurs</h3>
+<p>A city publishes new agendas, minutes, budget amendments and newsletters every month, forever. The backlog is a one-time project; the monthly flow is a retainer. Typical ongoing volume of 20&ndash;50 documents a month at 12 pages works out to <strong>$1,000&ndash;2,400 monthly</strong> per customer, which is $12,000&ndash;29,000 a year of recurring revenue on top of the project.</p>
+<p>That combination &mdash; a large one-time engagement that converts into a subscription because the obligation never ends &mdash; is the best structural feature of this idea.</p>
+</div>
+
+<h2 id="unit">06 &nbsp;Unit economics</h2>
+<div class="scroller band">
+<table>
+  <caption>Per page delivered</caption>
+  <thead><tr><th>Line</th><th class="num">Amount</th><th>Basis</th></tr></thead>
+  <tbody>
+    <tr><td>You charge</td><td class="num">$4.00</td><td>Roughly half the low end of manual rates</td></tr>
+    <tr><td>Tooling</td><td class="num">&ndash;$0.20</td><td>Licensed batch remediation</td></tr>
+    <tr><td>Human review</td><td class="num">&ndash;$0.85</td><td>~30 pages/hour on pre-tagged docs at $25/hr loaded</td></tr>
+    <tr><td>QA and validation</td><td class="num">&ndash;$0.10</td><td>PDF/UA check before delivery</td></tr>
+    <tr class="total"><td>Gross profit per page</td><td class="num">$2.85</td><td>71%</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="scroller band">
+<table>
+  <caption>What a single customer is worth</caption>
+  <thead><tr><th>Customer</th><th class="num">Documents</th><th class="num">Pages</th><th class="num">Project</th><th class="num">Annual recurring</th></tr></thead>
+  <tbody>
+    <tr><td>Small school district</td><td class="num">800</td><td class="num">8,000</td><td class="num">$32,000</td><td class="num">$9,000</td></tr>
+    <tr><td>Mid-size city</td><td class="num">3,000</td><td class="num">36,000</td><td class="num">$144,000</td><td class="num">$18,000</td></tr>
+    <tr><td>County government</td><td class="num">6,000</td><td class="num">75,000</td><td class="num">$300,000</td><td class="num">$29,000</td></tr>
+    <tr><td>Hospital system</td><td class="num">4,500</td><td class="num">50,000</td><td class="num">$200,000</td><td class="num">$24,000</td></tr>
+    <tr><td>Small physician practice</td><td class="num">40</td><td class="num">500</td><td class="num">$2,000</td><td class="num">$1,200</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="band">
+<div class="note money">
+  <span class="label">The number that matters</span>
+  <p>A mid-size city is worth <strong>$144,000</strong> in project revenue plus $18,000 a year recurring. The entire underpayment scanner business was worth $12,000 per customer per year. That is a twelve-fold difference in revenue per customer, and it is the single reason this idea survives the filter that killed the last one.</p>
+  <p>Note the bottom row. <strong>A small physician practice is worth $2,000.</strong> That matters for how you use your network, and it is the subject of section 08.</p>
+</div>
+</div>
+
+<h2 id="tam">07 &nbsp;Market and segmentation</h2>
+<div class="scroller band">
+<table>
+  <caption>Covered entities, US Census of Governments</caption>
+  <thead><tr><th>Segment</th><th class="num">Count</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td>Special-purpose districts</td><td class="num">39,555</td><td>Water, fire, parks, utilities. Explicitly covered, 2028 deadline.</td></tr>
+    <tr><td>Municipalities and townships</td><td class="num">35,705</td><td>The core market</td></tr>
+    <tr><td>Independent school districts</td><td class="num">12,546</td><td>Enormous document volume; board packets monthly</td></tr>
+    <tr><td>County governments</td><td class="num">3,031</td><td>Largest per-customer value</td></tr>
+    <tr class="total"><td>Total local governments</td><td class="num">90,837</td><td>Plus 50 states, public universities, transit, libraries</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="band">
+<p>Add the HHS side &mdash; hospitals, health systems, community health centers, and every practice billing Medicare Part B &mdash; and the covered population runs well past a hundred thousand organisations.</p>
+<p>At a conservative $25,000 average engagement and only 5% ever buying from anyone, that is a <strong>$100M+ market</strong>. You need roughly 15&ndash;30 customers to build a seven-figure business, which is the right shape: few enough to reach personally, valuable enough that each one matters.</p>
+<p><strong>And the prospect list is entirely public.</strong> Census government data, state .gov domain registries, and NCES school district files together give you name, type, population and website for every covered entity in the country. That is the input to the scanner and it costs nothing.</p>
+
+<h3>Where to actually aim</h3>
+<ul>
+  <li><strong>School districts</strong> are the best opening segment. Huge document volume, a board packet every month, purchasing thresholds that often permit direct award, and an existing culture of accessibility obligation from special education law.</li>
+  <li><strong>Mid-size cities and counties</strong> are the largest deals but the slowest procurement.</li>
+  <li><strong>Special districts</strong> are numerous, unsophisticated, and have a 2028 deadline &mdash; a large, slower-burning back catalogue of demand.</li>
+  <li><strong>Hospitals and health systems</strong> are high value with a May 2027 deadline, and are where your network is actually useful.</li>
+</ul>
+</div>
+
+<h2 id="network">08 &nbsp;What your network is actually worth here &mdash; honestly</h2>
+<div class="band">
+<p>You asked whether the physician network still applies. It does, but not in the way that first appears, and the distinction is worth being precise about.</p>
+<p><strong>Small physician practices are bad customers for this.</strong> A practice website has perhaps forty documents &mdash; intake forms, a HIPAA notice, a financial policy. That is roughly $2,000 of work. It is the same revenue-per-customer trap that killed the underpayment idea, and walking into it twice would be careless.</p>
+<p><strong>The value is that physicians are connected to hospitals.</strong> An interventional cardiologist has admitting privileges, sits on committees, and knows the people who run compliance and IT at the hospitals where he operates. A hospital system is a <strong>$200,000</strong> customer with a May 2027 deadline.</p>
+<p>A warm introduction from a respected attending physician to a hospital compliance officer is not as strong as a physician-to-physician referral &mdash; but it is enormously better than a cold email into a health system, which is close to unreachable otherwise.</p>
+
+<div class="note">
+  <span class="label">How to use it</span>
+  <p>Do not sell to your father's colleagues. <strong>Ask them who runs compliance at their hospital, and for an introduction.</strong> One sentence from a physician the administrator already knows converts a cold approach into a scheduled meeting.</p>
+  <p>Run the free scan on the hospital's public site first, so the introduction arrives with a finished document attached rather than a request for time.</p>
+</div>
+</div>
+
+<h2 id="gtm">09 &nbsp;Go to market</h2>
+<div class="band">
+<p>The mechanic that made the original idea attractive is intact and it is the best cold-acquisition tool available to a solo operator: <strong>a specific, alarming, finished report about them, produced before contact, at near-zero cost.</strong></p>
+
+<div class="script">
+  <span class="who">The email</span>
+  <p>Your website hosts 3,412 PDF documents. We tested every one. 3,209 fail WCAG 2.1 AA, and 812 are scanned images with no text layer at all &mdash; a screen reader reads those as a blank page.</p>
+  <p>Your compliance deadline is April 26, 2027. At prevailing manual remediation rates this backlog represents $34,000 to $96,000 of work.</p>
+  <p>The full inventory is attached. No charge, nothing required from you. If it is useful, I can explain how we do it for materially less.</p>
+</div>
+
+<p>Three things make that email work. It is <strong>specific to them</strong> and verifiably true. It arrives <strong>finished</strong> rather than asking for a call. And it costs you almost nothing, so you can send a thousand of them.</p>
+
+<h4>Sequence</h4>
+<ul>
+  <li><strong>Weeks 1&ndash;4:</strong> build the scanner, run it against 200 school districts in two or three states, hand-check the reports for accuracy before anything is sent.</li>
+  <li><strong>Weeks 5&ndash;10:</strong> outreach in batches. Expect a low single-digit reply rate and a high rate of forwarding &mdash; these reports get circulated internally, which is the point.</li>
+  <li><strong>Parallel:</strong> ask your father for two introductions to hospital compliance officers, arriving with their scan attached.</li>
+  <li><strong>Ongoing:</strong> price under the customer's direct-purchase threshold wherever possible. Many public entities can award up to $25,000&ndash;50,000 without competitive bidding, which turns a nine-month procurement into a purchase order. <strong>Phase large backlogs deliberately</strong> so the first engagement fits under that ceiling.</li>
+</ul>
+</div>
+
+<h2 id="projections">10 &nbsp;Projections</h2>
+<div class="scroller band">
+<table>
+  <caption>Base case</caption>
+  <thead><tr>
+    <th>Period</th><th class="num">New customers</th><th class="num">Project revenue</th>
+    <th class="num">Recurring</th><th class="num">Total revenue</th><th class="num">Gross profit</th>
+  </tr></thead>
+  <tbody>
+    <tr><td>Y1 H1</td><td class="num">2</td><td class="num">$55,000</td><td class="num">$3,000</td><td class="num">$58,000</td><td class="num">$41,000</td></tr>
+    <tr><td>Y1 H2</td><td class="num">6</td><td class="num">$168,000</td><td class="num">$14,000</td><td class="num">$182,000</td><td class="num">$129,000</td></tr>
+    <tr class="total"><td>Year 1</td><td class="num">8</td><td class="num">$223,000</td><td class="num">$17,000</td><td class="num">$240,000</td><td class="num">$170,000</td></tr>
+    <tr><td>Year 2</td><td class="num">24</td><td class="num">$780,000</td><td class="num">$135,000</td><td class="num">$915,000</td><td class="num">$641,000</td></tr>
+    <tr><td>Year 3</td><td class="num">45</td><td class="num">$1,690,000</td><td class="num">$430,000</td><td class="num">$2,120,000</td><td class="num">$1,462,000</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="scroller band">
+<table>
+  <caption>Three cases, revenue</caption>
+  <thead><tr><th>Case</th><th class="num">Year 1</th><th class="num">Year 2</th><th class="num">Year 3</th><th>Assumes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Bear</strong></td><td class="num">$85k</td><td class="num">$340k</td><td class="num">$700k</td><td>Procurement drags; 3 customers year one; deadline extended again</td></tr>
+    <tr><td><strong>Base</strong></td><td class="num">$240k</td><td class="num">$915k</td><td class="num">$2.12M</td><td>8 customers year one; reviewers hired on pace; deadline holds</td></tr>
+    <tr><td><strong>Bull</strong></td><td class="num">$420k</td><td class="num">$1.8M</td><td class="num">$4.5M</td><td>A county or health system lands early; a state contract vehicle opens the segment</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="band">
+<h4>Startup capital</h4>
+<p>Genuinely low, which is the other reason this beats the alternatives. Tooling licenses $1,500&ndash;3,000. Entity and contracts $2,500. Errors and omissions insurance $2,000&ndash;4,000. Compute for the scanner, a few hundred dollars. <strong>Call it $8,000&ndash;10,000 to be operating</strong>, and reviewers are hired against signed work rather than in advance &mdash; the opposite of the nurse problem.</p>
+
+<div class="note warn">
+  <span class="label">Where these break</span>
+  <p><strong>Procurement speed is the main variable.</strong> Pricing under direct-award thresholds is the single highest-leverage tactic in the plan, and the bear case is mostly a story about failing to do that.</p>
+  <p><strong>Quality at volume is the second.</strong> Year three assumes roughly eight to twelve trained reviewers producing consistent work. Training and QA are a real management job.</p>
+  <p><strong>And the deadline holding is the third.</strong> See the next section.</p>
+</div>
+</div>
+
+<h2 id="liability">11 &nbsp;Liability, and the words you must never use</h2>
+<div class="band">
+<p>You are producing documents your customer will rely on to satisfy a legal obligation. If a document you remediated is later cited in a complaint, your work is evidence.</p>
+<ul>
+  <li><strong>Never certify legal compliance.</strong> You remediate documents to conform to a named technical standard &mdash; WCAG 2.1 AA and PDF/UA &mdash; and you validate that conformance. Whether an organisation is "ADA compliant" is a legal conclusion about their entire programme and not yours to assert. The FTC's accessiBe order is precisely about a vendor overstating what its product delivered.</li>
+  <li><strong>Validate everything you ship</strong> with an independent checker and retain the report. It is your evidence of what you delivered and when.</li>
+  <li><strong>Carry errors and omissions insurance</strong> from the first engagement.</li>
+  <li><strong>Contract carefully:</strong> define the standard, the scope, the validation method, and a remedy limited to re-remediation. Have an attorney draft the master services agreement once; reuse it forever.</li>
+  <li><strong>Say plainly what is automated and what is human-reviewed.</strong> In a market this burned by overlay marketing, precise honesty is the differentiator, not a disclaimer.</li>
+</ul>
+</div>
+
+<h2 id="risk">12 &nbsp;The deadline risk, stated without spin</h2>
+<div class="band">
+<p>This is the thing that killed the CMMC idea and it deserves to be weighed properly rather than waved past.</p>
+<p><strong>Both rules have already been extended once, within three weeks of each other</strong> &mdash; DOJ on April 20, 2026 and HHS on May 7, 2026, each by exactly one year. If both extend again in spring 2027, your urgency evaporates and the bear case becomes the case.</p>
+
+<h4>Why I judge this materially less fragile than CMMC</h4>
+<ul>
+  <li><strong>The rules were extended, not suspended.</strong> DoD halted CMMC Phase II pending a review that could end the programme. DOJ published a final rule, moved a date, and stated it fully anticipates implementing at the new deadline.</li>
+  <li><strong>The underlying obligation exists independently.</strong> The general non-discrimination duty for digital programmes has applied since July 2024, and the ADA has been read to cover web content for years. The deadline sets when a specific technical standard bites; it does not create the duty.</li>
+  <li><strong>Private enforcement does not wait.</strong> Over 800 businesses were sued over inaccessible websites in a two-year period. That pressure is independent of any agency's calendar.</li>
+  <li><strong>The stated reason for extension was capacity, not doubt.</strong> DOJ said organisations and available technology could not get there in time. That is an argument for the service existing, not against it.</li>
+</ul>
+
+<div class="note warn">
+  <span class="label">How to hold the risk</span>
+  <p>Do not build a business whose only value proposition is a date. <strong>Lead with the inventory, not the deadline.</strong> "You have 3,209 broken documents and 812 that are completely unreadable" is true and useful whether the deadline is 2027, 2028, or 2029. The date creates urgency; the finding creates the sale. If the date moves, you lose a sales accelerant and keep the business.</p>
+</div>
+</div>
+
+<h2 id="competition">13 &nbsp;Competition</h2>
+<div class="band">
+<p>Real, established, and not dominant. Continual Engine, Equidox, CommonLook, PDFix, PREP, Accessible.org, CASO and a long tail of agencies all operate here. Tooling costs a few hundred to a few thousand dollars a year, so there is no technology moat for anyone, including you.</p>
+<p>Where a newcomer wins:</p>
+<ul>
+  <li><strong>Nobody leads with a completed inventory.</strong> Every competitor sells a consultation. You send a finished report about their specific document library before making contact. That is a genuinely different first impression and it is the whole edge.</li>
+  <li><strong>Most focus on websites; documents are the neglected half</strong> &mdash; and the half where volume, cost and exposure actually concentrate.</li>
+  <li><strong>Honesty is available as a position</strong> in a market where the category leader was fined a million dollars for overclaiming.</li>
+  <li><strong>Segment focus.</strong> Owning school districts in three states beats being a generalist nationally, and makes your reviewers faster because the documents repeat.</li>
+</ul>
+</div>
+
+<h2 id="ninety">14 &nbsp;The first ninety days</h2>
+<div class="band">
+<div class="phase">
+  <div class="when">Weeks 1&ndash;3</div>
+  <div class="what"><h4>Build the scanner and verify it by hand</h4>
+  <p>Crawl, enumerate documents, test each PDF, estimate pages and cost, generate the report. Then open thirty documents yourself and confirm the tool's verdict on each. A report that overstates a problem is worse than no report.</p></div>
+</div>
+<div class="phase">
+  <div class="when">Weeks 4&ndash;5</div>
+  <div class="what"><h4>Learn to actually remediate</h4>
+  <p>License the tooling and remediate fifty real documents end to end yourself. You cannot price, scope, or hire for work you have never done, and the first customer's scanned 1998 budget will teach you things no vendor demo will.</p></div>
+</div>
+<div class="phase">
+  <div class="when">Weeks 6&ndash;8</div>
+  <div class="what"><h4>Structure and first outreach</h4>
+  <p>Entity, master services agreement, E&amp;O insurance. Then run the scanner against 200 school districts and send the first batch, in small waves so you can adjust the report based on replies.</p></div>
+</div>
+<div class="phase">
+  <div class="when">Weeks 9&ndash;12</div>
+  <div class="what"><h4>First paid engagement</h4>
+  <p>Target a small, phaseable project under the customer's direct-award threshold. Deliver it yourself, measure your true pages-per-hour, and replace every estimate in this memo with an observed number.</p>
+  <p>In parallel: two introductions from your father to hospital compliance officers, each arriving with their scan attached.</p></div>
+</div>
+</div>
+
+<h2 id="glossary">15 &nbsp;Glossary</h2>
+<div class="band">
+<dl class="gloss">
+  <dt>WCAG 2.1 Level AA</dt><dd>The technical standard both rules require. 50 success criteria covering perceivability, operability, understandability and robustness.</dd>
+  <dt>PDF/UA</dt><dd>The ISO standard for accessible PDFs. What a validator checks against; the thing you can objectively claim to have met.</dd>
+  <dt>Tagged PDF</dt><dd>A PDF with an underlying structure tree marking headings, paragraphs, lists and tables. Untagged, a screen reader gets a wall of unstructured text or nothing at all.</dd>
+  <dt>Reading order</dt><dd>The sequence a screen reader announces content in. Visually correct documents are frequently wrong here, and it is the most common thing automation gets wrong.</dd>
+  <dt>Alt text</dt><dd>A text description of an image. Automation can generate it; whether it conveys the right meaning still needs a person.</dd>
+  <dt>Image-only PDF</dt><dd>A scan with no text layer. To a screen reader, a blank page. The most alarming number in any inventory and the most expensive to fix.</dd>
+  <dt>Overlay</dt><dd>A JavaScript widget claiming automatic accessibility. Fined by the FTC, rejected by courts. Never build, never resell.</dd>
+  <dt>Title II</dt><dd>The section of the ADA covering state and local government.</dd>
+  <dt>Section 504</dt><dd>The section of the Rehabilitation Act covering recipients of federal financial assistance &mdash; the healthcare hook.</dd>
+  <dt>Direct-award threshold</dt><dd>The amount a public entity may spend without competitive bidding, commonly $25,000&ndash;50,000. Pricing beneath it is the difference between a purchase order and a nine-month procurement.</dd>
+</dl>
+</div>
+
+<footer>
+  <p>Prepared September 2026. Compliance dates verified against DOJ and HHS sources current to this date and should be re-verified before any outreach campaign, as both rules have been extended once already. Unit economics are modelled estimates to be replaced with observed figures after the first engagement. Nothing here is legal advice; the master services agreement and any statement about what your work does or does not certify warrant an attorney's review before the first contract.</p>
+</footer>
+
+</main>
+</div>
