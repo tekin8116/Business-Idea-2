@@ -1,0 +1,182 @@
+<title>Remittance Review Overview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --ground:#FCFCFA; --surface:#F2F4F1; --raised:#FFFFFF;
+  --ink:#191D21; --ink-soft:#5A646C; --ink-faint:#8B949B;
+  --line:#DBDFDA; --line-soft:#E9ECE8;
+  --accent:#0E5A64; --accent-ink:#0A464E; --accent-wash:#E2EDEE;
+  --money:#1C6244; --money-wash:#E4EFE9;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#121618; --surface:#1A2023; --raised:#1E262A;
+    --ink:#E9EBE8; --ink-soft:#9BA5AB; --ink-faint:#77828A;
+    --line:#2B3337; --line-soft:#232B2F;
+    --accent:#57B6C2; --accent-ink:#8ACFD8; --accent-wash:#153136;
+    --money:#5AAE84; --money-wash:#153024;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#121618; --surface:#1A2023; --raised:#1E262A;
+  --ink:#E9EBE8; --ink-soft:#9BA5AB; --ink-faint:#77828A;
+  --line:#2B3337; --line-soft:#232B2F;
+  --accent:#57B6C2; --accent-ink:#8ACFD8; --accent-wash:#153136;
+  --money:#5AAE84; --money-wash:#153024;
+}
+*{box-sizing:border-box}
+body{
+  background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Source Serif 4","Iowan Old Style",Georgia,serif;
+  font-size:16.5px; line-height:1.6; -webkit-font-smoothing:antialiased;
+}
+.page{max-width:760px; margin:0 auto; padding:48px 28px 80px}
+h1,h2,h3{font-family:Archivo,"Helvetica Neue",Arial,sans-serif; text-wrap:balance; margin:0}
+h1{font-size:clamp(27px,4vw,35px); font-weight:700; letter-spacing:-.02em; line-height:1.14}
+h2{
+  font-size:17px; font-weight:600; letter-spacing:.005em;
+  margin:38px 0 8px; padding-top:20px; border-top:1px solid var(--line);
+}
+h3{font-size:14px; font-weight:600; margin:20px 0 3px}
+p{margin:12px 0}
+.eyebrow{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:10.5px; font-weight:600;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--accent); margin:0 0 11px;
+}
+.standfirst{font-size:18.5px; line-height:1.5; color:var(--ink-soft); margin:16px 0 0}
+header{padding-bottom:26px; border-bottom:3px solid var(--accent)}
+ul{margin:12px 0; padding-left:20px}
+li{margin-bottom:7px}
+li::marker{color:var(--accent)}
+.pair{display:grid; grid-template-columns:1fr; gap:1px; background:var(--line); border:1px solid var(--line); margin:22px 0}
+@media(min-width:620px){.pair{grid-template-columns:1fr 1fr}}
+.pane{background:var(--ground); padding:20px 22px}
+.pane h3{margin-top:0; color:var(--accent-ink)}
+.pane ul{margin-bottom:0; padding-left:18px; font-size:15.5px}
+.pane p{font-size:15.5px; color:var(--ink-soft)}
+.note{
+  border-left:3px solid var(--accent); background:var(--accent-wash);
+  padding:15px 19px; margin:22px 0; border-radius:0 3px 3px 0;
+}
+.note.money{border-left-color:var(--money); background:var(--money-wash)}
+.note p:first-child{margin-top:0}
+.note p:last-child{margin-bottom:0}
+.note .label{
+  font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:600;
+  letter-spacing:.13em; text-transform:uppercase; color:var(--accent);
+  display:block; margin-bottom:6px;
+}
+.note.money .label{color:var(--money)}
+dl.qa{margin:14px 0}
+dl.qa dt{font-family:Archivo,sans-serif; font-size:15px; font-weight:600; margin-top:18px}
+dl.qa dd{margin:4px 0 0; color:var(--ink-soft); font-size:15.5px}
+.steps{counter-reset:s; list-style:none; padding:0; margin:16px 0}
+.steps li{
+  counter-increment:s; position:relative; padding-left:38px; margin-bottom:14px;
+}
+.steps li::before{
+  content:counter(s); position:absolute; left:0; top:1px;
+  font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:600;
+  width:24px; height:24px; border-radius:50%; background:var(--accent-wash);
+  color:var(--accent-ink); display:grid; place-items:center;
+}
+.steps strong{display:block; font-family:Archivo,sans-serif; font-size:15px}
+.steps span{color:var(--ink-soft); font-size:15.5px}
+code{font-family:"IBM Plex Mono",monospace; font-size:.87em; background:var(--surface); padding:1px 5px; border-radius:2px; color:var(--accent-ink)}
+footer{border-top:1px solid var(--line); margin-top:44px; padding-top:20px; font-size:13px; color:var(--ink-faint)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+@media print{
+  .page{max-width:none; padding:0}
+  h2{page-break-after:avoid}
+  .pair,.note{page-break-inside:avoid}
+}
+</style>
+
+<div class="page">
+<header>
+  <p class="eyebrow">For the practice administrator</p>
+  <h1>A second look at what your payers actually allowed</h1>
+  <p class="standfirst">We read your remittance files and find the claims where an insurer allowed less than your contract calls for &mdash; the ones that posted as paid, so nobody ever reviewed them. The first review is free.</p>
+</header>
+
+<h2>What we are looking for</h2>
+<p>Not denials. Your team already works those, and they are visible. We are looking for the quieter problem: a payer allows $551 on a claim your contract prices at $612. Your system posts the payment, closes the claim at a zero balance, and everyone moves on &mdash; because from the software's point of view, nothing went wrong.</p>
+<p>These add up in two ways. Individually, as scattered variances. And systematically, when a payer's fee schedule quietly changes and every claim for that code is short from that day forward until somebody notices.</p>
+
+<div class="note">
+  <span class="label">Why it matters now</span>
+  <p>Most contracts allow 30 to 90 days from the remittance date to dispute an adjudication. After that the money is not recoverable. So this is worth a look on a schedule, not once.</p>
+</div>
+
+<h2>What we need, and what you get</h2>
+<div class="pair">
+  <div class="pane">
+    <h3>What we need from you</h3>
+    <ul>
+      <li>Your <strong>835 / ERA files</strong> for the last 24 months, downloaded from your clearinghouse. Twelve months works; twenty-four is better.</li>
+      <li>Raw <code>.835</code>, <code>.era</code> or <code>.txt</code> files &mdash; not the PDF remittance summaries, which have already dropped the detail we need.</li>
+      <li>Nothing else to start.</li>
+    </ul>
+    <p><em>Optional, and it makes the findings stronger:</em> your contracted rates, or simply what percentage of Medicare each payer pays you.</p>
+  </div>
+  <div class="pane">
+    <h3>What you get back</h3>
+    <ul>
+      <li>A written review of every claim line we believe was underpaid, with the dollar amount.</li>
+      <li>A worklist ranked by <strong>which appeal windows close first</strong>, not by size.</li>
+      <li>An appeal letter drafted for each one, ready for your biller to review and send.</li>
+      <li>Our working shown for every finding, so your team can check it.</li>
+    </ul>
+  </div>
+</div>
+
+<h2>How your data is handled</h2>
+<p>We treat this as the most important part of the conversation, because it is.</p>
+<ul>
+  <li><strong>A signed Business Associate Agreement comes first.</strong> Nothing moves before it. Ours is available for your review, or we will sign yours.</li>
+  <li><strong>Patient identity is never read.</strong> Our analysis works entirely from procedure codes, dates, and dollar amounts. Patient names, member identifiers and dates of birth are skipped at the point the file is opened &mdash; they never enter the system at all.</li>
+  <li><strong>Encrypted transfer and storage.</strong> Files move through a secure, expiring link, never by ordinary email, and sit on encrypted storage.</li>
+  <li><strong>A defined retention period.</strong> We agree in writing how long we keep files, and we delete on that schedule.</li>
+</ul>
+
+<h2>How it works</h2>
+<ol class="steps">
+  <li><strong>Sign the BAA</strong><span>One document. We can usually turn this around the same day.</span></li>
+  <li><strong>Send the files</strong><span>Your biller exports a date range from your clearinghouse portal and uploads it to a secure link. Usually about fifteen minutes of their time.</span></li>
+  <li><strong>We review</strong><span>Typically three to five business days.</span></li>
+  <li><strong>We walk you through it</strong><span>A short call with whoever runs your billing. We go through the findings, including the ones we are unsure about.</span></li>
+  <li><strong>You decide what happens next</strong><span>Work the list yourself, or we can handle the appeals for a percentage of what actually comes back.</span></li>
+</ol>
+
+<h2>Common questions</h2>
+<dl class="qa">
+  <dt>Doesn't our billing company already catch this?</dt>
+  <dd>They catch denials, and they are usually good at it. Underpayments are different &mdash; the claim posts as paid, so it never reaches their work queue. It is not a failure on their part; it is a gap nobody's role covers.</dd>
+
+  <dt>Doesn't our practice management system flag this?</dt>
+  <dd>Some can, if your fee schedules are loaded and kept current. In practice they are often entered at go-live and not revisited. It is worth asking your team when they were last updated.</dd>
+
+  <dt>What if you find nothing?</dt>
+  <dd>Then you have that answer for free, and it is a genuinely useful one. We would rather tell you that than manufacture findings.</dd>
+
+  <dt>Will this create work for my staff?</dt>
+  <dd>The review itself costs them about fifteen minutes. Acting on the findings is your call, and the letters are already drafted. If your team has no capacity, we can work the appeals ourselves.</dd>
+
+  <dt>What does it cost?</dt>
+  <dd>The first review is free. Ongoing monthly monitoring is a flat fee based on the size of your practice. If you would like us to work the appeals as well, we take a percentage of what is actually recovered &mdash; so it costs nothing if nothing comes back.</dd>
+</dl>
+
+<div class="note money">
+  <span class="label">The honest version</span>
+  <p>We will not find money at every practice, and we will not know until we look. Some findings will be genuine underpayments; others will turn out to be rates you agreed to, or coding that needs a second look on your side. We flag which is which rather than putting everything in one number.</p>
+</div>
+
+<h2>Next step</h2>
+<p>If you would like us to take a look, the only thing needed to begin is the BAA. Send it over, or ask us for ours, and we will send the secure upload link the same day.</p>
+
+<footer>
+  <p>Prepared for practice administrators considering a remittance review. Nothing in this document is legal or compliance advice; your own counsel should review any agreement before signing.</p>
+</footer>
+</div>

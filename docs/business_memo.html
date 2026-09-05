@@ -1,0 +1,648 @@
+<title>The Silent Underpayment Book</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#FCFCFA; --surface:#F2F4F1; --raised:#FFFFFF;
+  --ink:#191D21; --ink-soft:#5A646C; --ink-faint:#8B949B;
+  --line:#DBDFDA; --line-soft:#E9ECE8;
+  --accent:#0E5A64; --accent-ink:#0A464E; --accent-wash:#E2EDEE;
+  --money:#1C6244; --money-wash:#E4EFE9;
+  --alert:#94461A; --alert-wash:#F7E9E0;
+  --measure:69ch;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#121618; --surface:#1A2023; --raised:#1E262A;
+    --ink:#E9EBE8; --ink-soft:#9BA5AB; --ink-faint:#77828A;
+    --line:#2B3337; --line-soft:#232B2F;
+    --accent:#57B6C2; --accent-ink:#8ACFD8; --accent-wash:#153136;
+    --money:#5AAE84; --money-wash:#153024;
+    --alert:#D38A57; --alert-wash:#2E2118;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#121618; --surface:#1A2023; --raised:#1E262A;
+  --ink:#E9EBE8; --ink-soft:#9BA5AB; --ink-faint:#77828A;
+  --line:#2B3337; --line-soft:#232B2F;
+  --accent:#57B6C2; --accent-ink:#8ACFD8; --accent-wash:#153136;
+  --money:#5AAE84; --money-wash:#153024;
+  --alert:#D38A57; --alert-wash:#2E2118;
+}
+*{box-sizing:border-box}
+body{
+  background:var(--ground); color:var(--ink);
+  font-family:"Source Serif 4","Iowan Old Style",Georgia,serif;
+  font-size:17px; line-height:1.62; margin:0;
+  -webkit-font-smoothing:antialiased;
+}
+.shell{display:grid; grid-template-columns:1fr; max-width:1240px; margin:0 auto; padding:0 24px}
+@media(min-width:1060px){
+  .shell{grid-template-columns:236px minmax(0,1fr); gap:56px; padding:0 40px}
+}
+nav.toc{display:none}
+@media(min-width:1060px){
+  nav.toc{
+    display:block; position:sticky; top:0; align-self:start;
+    max-height:100vh; overflow-y:auto; padding:56px 0 40px;
+    font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11.5px; line-height:1.5;
+  }
+  nav.toc ol{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px}
+  nav.toc a{color:var(--ink-soft); text-decoration:none; display:block; border-left:2px solid var(--line); padding-left:11px}
+  nav.toc a:hover,nav.toc a:focus-visible{color:var(--accent); border-left-color:var(--accent)}
+  nav.toc .n{color:var(--ink-faint); margin-right:7px}
+  nav.toc .tochead{
+    font-weight:600; letter-spacing:.11em; text-transform:uppercase;
+    color:var(--ink-faint); margin-bottom:16px; padding-left:13px;
+  }
+}
+main{padding:52px 0 100px; min-width:0}
+.band{max-width:var(--measure)}
+h1,h2,h3,h4{font-family:Archivo,"Helvetica Neue",Arial,sans-serif; text-wrap:balance; margin:0}
+h1{font-size:clamp(31px,4.6vw,44px); font-weight:700; line-height:1.1; letter-spacing:-.022em}
+h2{
+  font-size:25px; font-weight:600; line-height:1.2; letter-spacing:-.013em;
+  margin:64px 0 6px; padding-top:26px; border-top:1px solid var(--line);
+}
+h3{font-size:18px; font-weight:600; margin:34px 0 4px; letter-spacing:-.006em}
+h4{font-size:14px; font-weight:600; margin:24px 0 2px}
+p{margin:14px 0}
+a{color:var(--accent); text-decoration-thickness:1px; text-underline-offset:2px}
+strong{font-weight:600}
+.eyebrow{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px; font-weight:600;
+  letter-spacing:.15em; text-transform:uppercase; color:var(--accent); margin:0 0 12px;
+}
+.standfirst{font-size:20px; line-height:1.5; color:var(--ink-soft); margin:20px 0 0; max-width:62ch}
+.masthead{padding:56px 0 34px; border-bottom:3px solid var(--accent)}
+.meta{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11.5px;
+  color:var(--ink-faint); margin-top:26px; display:flex; flex-wrap:wrap; gap:6px 20px;
+}
+ul,ol{margin:14px 0; padding-left:22px; max-width:var(--measure)}
+li{margin-bottom:8px}
+li::marker{color:var(--accent)}
+.scroller{overflow-x:auto; margin:22px 0; border:1px solid var(--line); border-radius:3px; background:var(--raised)}
+table{border-collapse:collapse; width:100%; font-size:14.5px; font-family:Archivo,sans-serif}
+caption{
+  text-align:left; padding:13px 16px 0; font-family:"IBM Plex Mono",monospace;
+  font-size:11px; letter-spacing:.11em; text-transform:uppercase; color:var(--ink-faint);
+}
+th,td{padding:9px 16px; text-align:left; border-bottom:1px solid var(--line-soft); vertical-align:top}
+thead th{
+  font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:600;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--ink-faint);
+  border-bottom:1px solid var(--line); white-space:nowrap;
+}
+tbody tr:last-child td{border-bottom:none}
+td.num,th.num{text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; font-family:"IBM Plex Mono",monospace; font-size:13px}
+tr.total td{border-top:2px solid var(--line); font-weight:600; background:var(--surface)}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.88em}
+code{background:var(--surface); padding:1px 5px; border-radius:2px; color:var(--accent-ink)}
+.note{
+  border-left:3px solid var(--accent); background:var(--accent-wash);
+  padding:16px 20px; margin:24px 0; max-width:var(--measure); border-radius:0 3px 3px 0;
+}
+.note.warn{border-left-color:var(--alert); background:var(--alert-wash)}
+.note.money{border-left-color:var(--money); background:var(--money-wash)}
+.note p:first-child{margin-top:0}
+.note p:last-child{margin-bottom:0}
+.note .label{
+  font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:600;
+  letter-spacing:.13em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:7px;
+}
+.note.warn .label{color:var(--alert)}
+.note.money .label{color:var(--money)}
+.figures{display:grid; grid-template-columns:repeat(auto-fit,minmax(148px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); margin:26px 0}
+.fig{background:var(--ground); padding:16px 18px}
+.fig .v{font-family:Archivo,sans-serif; font-size:26px; font-weight:700; letter-spacing:-.02em; font-variant-numeric:tabular-nums; line-height:1.15}
+.fig .k{font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); margin-top:6px}
+.phase{display:flex; gap:18px; padding:18px 0; border-bottom:1px solid var(--line-soft); max-width:var(--measure)}
+.phase:last-child{border-bottom:none}
+.phase .when{
+  font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:600; letter-spacing:.06em;
+  color:var(--accent); flex:0 0 96px; padding-top:4px; text-transform:uppercase;
+}
+.phase .what{flex:1; min-width:0}
+.phase .what h4{margin-top:0}
+.phase .what p{margin:5px 0 0; font-size:15.5px; color:var(--ink-soft)}
+dl.gloss{max-width:var(--measure); margin:20px 0}
+dl.gloss dt{font-family:"IBM Plex Mono",monospace; font-size:13px; font-weight:600; color:var(--accent-ink); margin-top:16px}
+dl.gloss dd{margin:3px 0 0; font-size:15.5px; color:var(--ink-soft)}
+.script{
+  background:var(--surface); border:1px solid var(--line); border-radius:3px;
+  padding:16px 20px; margin:16px 0; max-width:var(--measure); font-size:16px;
+}
+.script .who{
+  font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:600; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--ink-faint); display:block; margin-bottom:8px;
+}
+.script p{margin:9px 0; font-style:italic}
+footer{border-top:1px solid var(--line); margin-top:72px; padding:26px 0 0; font-size:13.5px; color:var(--ink-faint); max-width:var(--measure)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+h2[id],h3[id]{scroll-margin-top:20px}
+</style>
+
+<div class="shell">
+<nav class="toc" aria-label="Contents">
+  <div class="tochead">Contents</div>
+  <ol>
+    <li><a href="#thesis"><span class="n">01</span>The thesis</a></li>
+    <li><a href="#problem"><span class="n">02</span>The problem</a></li>
+    <li><a href="#gap"><span class="n">03</span>Why it persists</a></li>
+    <li><a href="#competition"><span class="n">04</span>Who else is here</a></li>
+    <li><a href="#market"><span class="n">05</span>Market size</a></li>
+    <li><a href="#headwind"><span class="n">06</span>The headwind</a></li>
+    <li><a href="#model"><span class="n">07</span>Pricing</a></li>
+    <li><a href="#gtm"><span class="n">08</span>Go to market</a></li>
+    <li><a href="#projections"><span class="n">09</span>Projections</a></li>
+    <li><a href="#costs"><span class="n">10</span>Cost structure</a></li>
+    <li><a href="#ops"><span class="n">11</span>Operations</a></li>
+    <li><a href="#moat"><span class="n">12</span>The real asset</a></li>
+    <li><a href="#ending"><span class="n">13</span>How this ends</a></li>
+    <li><a href="#expert"><span class="n">14</span>Sounding expert</a></li>
+    <li><a href="#objections"><span class="n">15</span>Objections</a></li>
+    <li><a href="#thirty"><span class="n">16</span>First 30 days</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="masthead band">
+  <p class="eyebrow">Operating memo &middot; Confidential</p>
+  <h1>The Silent Underpayment Book</h1>
+  <p class="standfirst">Insurers underpay independent medical practices on claims those practices believe were paid correctly. The money is real, the evidence is in files the practice already owns, and the window to claim it closes in 90 days.</p>
+  <div class="meta">
+    <span>September 2026</span><span>Prepared for the operator</span><span>Read before the first sales call</span>
+  </div>
+</header>
+
+<h2 id="thesis">01 &nbsp;The thesis in one paragraph</h2>
+<div class="band">
+<p>A medical practice signs a contract saying a payer will allow $612.40 for a procedure. Months later the payer allows $551.16 instead. The practice's software posts the payment, closes the claim at a zero balance, and files it away as paid. No alert fires, because the software knows what <em>was</em> paid and has no idea what <em>should</em> have been paid &mdash; the contracted rate lives in a PDF nobody has opened since signing. Industry analyses put incorrect commercial payments at 5&ndash;30% of claims, and practices that actually look recover 0.8&ndash;2.0% of net revenue. We read the practice's electronic remittance files, find the shortfall, and hand them a worklist with the appeal letters already written. The first analysis is free and costs us nothing to produce; the monitoring is a subscription, because payer rates drift forever.</p>
+</div>
+
+<div class="figures">
+  <div class="fig"><div class="v">5&ndash;30%</div><div class="k">Commercial claims paid incorrectly</div></div>
+  <div class="fig"><div class="v">0.8&ndash;2.0%</div><div class="k">Of net revenue typically recovered</div></div>
+  <div class="fig"><div class="v">30&ndash;90</div><div class="k">Days to appeal before it expires</div></div>
+  <div class="fig"><div class="v">$0</div><div class="k">Marginal cost of an audit</div></div>
+</div>
+
+<h2 id="problem">02 &nbsp;The problem, mechanically</h2>
+<div class="band">
+<p>You need to be able to explain this on a phone call without notes. Here it is at the level of detail that makes a practice manager lean forward.</p>
+
+<h3>The distinction everything rests on</h3>
+<p>There are three numbers on every claim line, and confusing them is why this problem is invisible.</p>
+<ul>
+  <li><strong>Billed</strong> &mdash; what the practice asked for. Largely fiction; practices bill well above any contracted rate.</li>
+  <li><strong>Allowed</strong> &mdash; what the payer says the service is worth. <em>This is the number the contract governs.</em></li>
+  <li><strong>Paid</strong> &mdash; the allowed amount minus whatever the patient owes.</li>
+</ul>
+<p>Consider three patients getting the same procedure in the same week under the same Aetna contract, where the allowed amount is $612.40 in all three cases:</p>
+</div>
+
+<div class="scroller band">
+<table>
+  <caption>Identical contract, identical service, three deposits</caption>
+  <thead><tr><th>Patient situation</th><th class="num">Allowed</th><th class="num">Patient owes</th><th class="num">Payer sends</th></tr></thead>
+  <tbody>
+    <tr><td>Deductible met, no coinsurance</td><td class="num">612.40</td><td class="num">0.00</td><td class="num">612.40</td></tr>
+    <tr><td>$3,000 deductible, unmet</td><td class="num">612.40</td><td class="num">612.40</td><td class="num">0.00</td></tr>
+    <tr><td>20% coinsurance</td><td class="num">612.40</td><td class="num">122.48</td><td class="num">489.92</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="band">
+<p>The deposits are $612.40, $0.00 and $489.92 &mdash; and every one is correct. This is why nobody eyeballs it: payments swing wildly for entirely legitimate reasons, so nothing ever looks anomalous. An underpayment is not "they sent less money." It is <strong>the payer set the allowed amount below what it agreed to</strong>, and that only shows up if you compare the right column against a contract.</p>
+
+<h3>The three ways money actually goes missing</h3>
+<p>In order of how much they are worth:</p>
+<ol>
+  <li><strong>Rate drift.</strong> Fee schedules update annually, sometimes mid-year. The rate a payer applies quietly falls and nobody is told. Every claim for that code is underpaid from that day forward, so this compounds &mdash; a 12% cut in April is still being underpaid in December.</li>
+  <li><strong>Bundling and edit misfires.</strong> A payer folds a separately payable service into another one. The classic case is a designated add-on code &mdash; in cardiology, intravascular ultrasound or fractional flow reserve alongside a stent &mdash; denied as "included in another service." It is wrong, and it repeats on every comparable claim until somebody disputes it.</li>
+  <li><strong>Contract variance.</strong> Straightforward failure to honor the agreed rate on individual claims.</li>
+</ol>
+
+<div class="note warn">
+  <span class="label">The countdown</span>
+  <p>Appeal windows typically run 30&ndash;90 days from the <em>remittance</em> date, not the service date. Medicare redetermination allows 120. Past that, the money is gone permanently &mdash; there is no appeal, no escalation, no lawsuit worth filing over a $340 line. Every month a practice does not look, a slice of last quarter's revenue expires. This urgency is real and it is the sharpest thing you have to say.</p>
+</div>
+</div>
+
+<h2 id="gap">03 &nbsp;Why it has not already been fixed</h2>
+<div class="band">
+<p>The obvious objection, and you will hear it in the first three calls. The answer is structural rather than clever.</p>
+
+<h3>The software cannot see it</h3>
+<p>Practice management systems watch aggressively for <em>denials</em>, because a denial is $0 and loud. But when a payer allows $551 against a contracted $612, the claim settles as a zero-balance transaction and posts as paid in full. No alert fires. The system compares payment to expected balance, and the balance <em>is</em> zero.</p>
+<p>The reason is almost stupidly simple: <strong>the software does not know what the contract says.</strong> Most systems have a module to load fee schedules. Loading and maintaining rates across a dozen payers &mdash; hundreds of codes each, updated annually and sometimes mid-year &mdash; is a job nobody at a six-physician practice has time for, so it never gets done.</p>
+
+<h3>The billing company is not incentivized</h3>
+<p>Most small practices outsource billing at 4&ndash;9% of collections. Chasing a $14 underpayment costs that company more in labor than the 5% it earns back. Their economics push hard toward volume and away from line-level variance. They are not negligent; they are rationally ignoring it.</p>
+
+<h3>The tools that exist were built for hospitals</h3>
+<p>Contract management and underpayment analytics are a real, mature software category &mdash; and every serious product in it is priced, scoped and implemented for health systems and large groups. A three-physician cardiology practice cannot buy, implement, or staff any of them.</p>
+
+<div class="note">
+  <span class="label">The gap in one sentence</span>
+  <p>The problem is universal, the solution exists only at the top of the market, and the bottom of the market has the same payers making the same errors with nobody watching.</p>
+</div>
+</div>
+
+<h2 id="competition">04 &nbsp;Who else is in this market</h2>
+<div class="band">
+<p>Know these names. A sophisticated practice administrator may raise one, and being unable to place it costs you the room.</p>
+</div>
+
+<div class="scroller band">
+<table>
+  <caption>Competitive landscape</caption>
+  <thead><tr><th>Who</th><th>What they do</th><th>Why they are not your competitor</th></tr></thead>
+  <tbody>
+    <tr><td><strong>MD Clarity</strong> (RevFind)</td><td>Purpose-built underpayment detection plus an in-house recovery team. The most direct analogue to what we do.</td><td>Sells to provider <em>organizations</em> &mdash; mid-market groups and up. Enterprise implementation and pricing.</td></tr>
+    <tr><td><strong>Waystar</strong> (Revenue Capture)</td><td>Underpayment detection inside a large clearinghouse and RCM platform.</td><td>Contract management is not where it is strongest; oriented to hospital DRG logic rather than physician fee schedules.</td></tr>
+    <tr><td><strong>FinThrive</strong></td><td>Denials and Underpayments Analyzer, paired with Contract Manager.</td><td>Enterprise health-system product. Not sold to a six-doctor practice.</td></tr>
+    <tr><td><strong>athenahealth</strong></td><td>ERA posting reconciles against a <em>loaded</em> fee schedule and flags below-contract payments.</td><td><strong>The real one. Read the next paragraph.</strong></td></tr>
+    <tr><td>Billing companies</td><td>Handle claims end-to-end at 4&ndash;9% of collections.</td><td>Paid on volume; line-level variance is uneconomic for them to chase.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="band">
+<div class="note warn">
+  <span class="label">Be honest about athenahealth</span>
+  <p>Athena genuinely has this feature. But the operative word is <strong>loaded</strong> &mdash; it compares against the fee schedule the practice entered and maintains. Most practices never entered one, or entered it at go-live in 2019 and never touched it again. So the capability exists and sits dormant.</p>
+  <p>Never tell an athena practice their system cannot do this. Ask instead: <em>"When did someone last update your fee schedules in athena?"</em> The answer is almost always a pause. That pause is your opening, and it is far stronger than a claim they can disprove.</p>
+</div>
+</div>
+
+<h2 id="market">05 &nbsp;Market size, derived honestly</h2>
+<div class="band">
+<p>I am showing the derivation rather than a headline number, because the inputs matter more than the output and the number is smaller than you might hope.</p>
+</div>
+
+<div class="scroller band">
+<table>
+  <caption>Bottom-up sizing</caption>
+  <thead><tr><th>Step</th><th class="num">Figure</th><th>Source / reasoning</th></tr></thead>
+  <tbody>
+    <tr><td>Independent US physicians</td><td class="num">120,900</td><td>January 2026; 82% of physicians are now hospital- or corporate-employed</td></tr>
+    <tr><td>Physician-owned share of practices</td><td class="num">36.1%</td><td>Down from 70%+ a decade ago</td></tr>
+    <tr><td>Estimated independent practices</td><td class="num">35&ndash;60k</td><td>Derived at roughly 2&ndash;3 physicians per independent practice</td></tr>
+    <tr><td>Addressable: 2&ndash;20 physicians, no enterprise RCM tooling</td><td class="num">15&ndash;25k</td><td>Excludes solo practices too small to pay, and groups large enough to buy MD Clarity</td></tr>
+    <tr><td>Realistic annual contract value</td><td class="num">$8&ndash;15k</td><td>Monitoring subscription plus recovery contingency</td></tr>
+    <tr class="total"><td>Serviceable market</td><td class="num">$150&ndash;300M</td><td>Annual, recurring</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="band">
+<p>That is a real market and a modest one. It will not support a venture-scale company. It comfortably supports a business earning $1&ndash;3M a year with a handful of staff, which is the actual objective.</p>
+
+<h3>What one practice is worth</h3>
+<p>Using interventional cardiology, since that is where you start. MGMA puts cardiology compensation near a $520,000 median; procedural specialties typically collect roughly two to two-and-a-half times compensation.</p>
+</div>
+
+<div class="scroller band">
+<table>
+  <caption>Unit economics of a three-physician cardiology practice</caption>
+  <thead><tr><th>Line</th><th class="num">Amount</th><th>Basis</th></tr></thead>
+  <tbody>
+    <tr><td>Annual collections</td><td class="num">$3,000,000</td><td>~$1M per procedural physician</td></tr>
+    <tr><td>Underpayment identified</td><td class="num">$36,000</td><td>1.2% of net revenue, mid-range of published recovery rates</td></tr>
+    <tr><td>Still inside appeal window</td><td class="num">$25,000</td><td>~70%, assuming 24 months of files</td></tr>
+    <tr><td>Actually recovered</td><td class="num">$16,000</td><td>~65% appeal success, conservatively</td></tr>
+    <tr class="total"><td>Our revenue per practice</td><td class="num">$13,000</td><td>$750/mo monitoring + 25% of recovery</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="band">
+<div class="note money">
+  <span class="label">Why the pricing is not a fight</span>
+  <p>They already pay a billing company 4&ndash;9% of <em>everything</em>. You are asking 25% of money they were never going to see. Framed that way, the objection is almost never price &mdash; it is trust and effort, which is exactly what a warm introduction solves.</p>
+</div>
+</div>
+
+<h2 id="headwind">06 &nbsp;The headwind you must not ignore</h2>
+<div class="band">
+<p>This is the single biggest risk to the business and I want it stated before the projections, not buried after them.</p>
+<p><strong>The independent practice market is shrinking, quickly.</strong> Hospital and corporate employment of physicians reached 550,494 by January 2026 while independent physicians fell to 120,900. Hospital systems nearly doubled their employed physicians since 2018. There are roughly 81,100 fewer independent practices than there were.</p>
+<p>Your entire addressable market is contracting every year you operate in it.</p>
+
+<h4>Three things that partially offset it</h4>
+<ul>
+  <li><strong>Consolidation creates better buyers, not just fewer.</strong> Private-equity-backed platforms and management services organizations are rolling up independent practices into 30&ndash;200 physician groups. Those are <em>ideal</em> customers &mdash; large enough to care about six figures of leakage, still too small for enterprise RCM, and one sale covers many practices.</li>
+  <li><strong>Consolidation increases the pain.</strong> A newly rolled-up group inherits a dozen legacy contracts nobody has reconciled. That is a much bigger audit.</li>
+  <li><strong>There is counter-movement.</strong> Some hospital-employed physicians are returning to independence, though not at a rate that reverses the trend.</li>
+</ul>
+
+<div class="note warn">
+  <span class="label">What this means for strategy</span>
+  <p>Do not build a business that only works for three-doctor practices. Build the tooling so one analysis run scales to a 60-physician group, and treat MSOs and PE platforms as the year-two target. The independent solo practice is your <em>entry</em> market because your network is there &mdash; not your <em>end</em> market.</p>
+</div>
+</div>
+
+<h2 id="model">07 &nbsp;Pricing and packaging</h2>
+<div class="band">
+<p>The structure matters more than the numbers, and it borrows from the only sales motion that reliably works without an audience: <strong>give away something specific, valuable, and free to produce; charge for the recurring version.</strong></p>
+
+<h3>The free look-back audit</h3>
+<p>24 months of remittance files, analyzed, producing a report with a real dollar figure. It costs cents in compute. It is the entire sales process &mdash; the prospect sees a number about their own practice before any money changes hands. Never charge for this in year one. The report is the pitch.</p>
+
+<h3>Then two revenue lines</h3>
+</div>
+
+<div class="scroller band">
+<table>
+  <caption>Pricing structure</caption>
+  <thead><tr><th>Tier</th><th>Practice size</th><th class="num">Monitoring</th><th>Recovery service</th></tr></thead>
+  <tbody>
+    <tr><td>Solo</td><td>1&ndash;2 physicians</td><td class="num">$400/mo</td><td rowspan="4" style="vertical-align:middle">25&ndash;30% of dollars actually recovered. Optional. You draft and track the appeals; they sign and send.</td></tr>
+    <tr><td>Group</td><td>3&ndash;6 physicians</td><td class="num">$750/mo</td></tr>
+    <tr><td>Multi-site</td><td>7&ndash;15 physicians</td><td class="num">$1,500/mo</td></tr>
+    <tr><td>Platform</td><td>16+ / MSO</td><td class="num">$3,000+/mo</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="band">
+<p>Monitoring is monthly ingestion of new remittances, a refreshed worklist, and an alert the moment a payer's rate steps down. It recurs because payer drift never stops &mdash; this is a genuine subscription, not a subscription-shaped one-time service.</p>
+<p><strong>Contingency is the upsell, not the entry.</strong> It pays better but consumes labor, and labor is what you do not have. Sell monitoring first; add recovery for practices whose staff will not work the list themselves.</p>
+</div>
+
+<h2 id="gtm">08 &nbsp;Go to market</h2>
+<div class="band">
+<p>You have the thing almost nobody starting a business has: warm access to the exact buyer. Spend it deliberately, because it is spendable exactly once.</p>
+</div>
+
+<div class="band">
+<div class="phase">
+  <div class="when">Phase 0</div>
+  <div class="what"><h4>One practice, free, as a design partner</h4>
+  <p>Your father's practice. Not a customer &mdash; a partner. The goal is not revenue, it is to run against real Availity or Optum files and find what breaks, and to produce the first real dollar figure. Set the expectation explicitly: this is early, you are proving it out, here is what you promise and what you do not.</p></div>
+</div>
+<div class="phase">
+  <div class="when">Phase 1</div>
+  <div class="what"><h4>Three to five free audits from the network</h4>
+  <p>Different specialties, different practice management systems, different clearinghouses. Every one teaches you a parsing quirk and produces a case study. Ask for nothing but the files and permission to cite the number anonymously.</p></div>
+</div>
+<div class="phase">
+  <div class="when">Phase 2</div>
+  <div class="what"><h4>Convert, then widen the same circle</h4>
+  <p>Now you have "we found a cardiology group in Texas $31,000, and $22,000 was still recoverable." That sentence is the entire product. Go back through the network with it. This is where the first real revenue lands.</p></div>
+</div>
+<div class="phase">
+  <div class="when">Phase 3</div>
+  <div class="what"><h4>Beyond the network</h4>
+  <p>Specialty societies and state medical associations (sponsorships and newsletters reach exactly your buyer); independent practice associations; MSO and PE platform operators; and billing companies &mdash; who look like competitors but are the best channel of all, because they have the client relationships and no tooling.</p></div>
+</div>
+</div>
+
+<div class="band">
+<div class="note">
+  <span class="label">Sequencing rule</span>
+  <p>Never approach the network with a product. Approach with a finding. "Can I look at your remittances for free and tell you what I see" is a different conversation from "I'd like to sell you something," and only one of them survives being your father's son.</p>
+</div>
+</div>
+
+<h2 id="projections">09 &nbsp;Financial projections</h2>
+<div class="band">
+<p>Three years, three cases. The assumptions are exposed so you can argue with them; treat base as the plan and bear as the one you must survive.</p>
+</div>
+
+<div class="scroller band">
+<table>
+  <caption>Revenue projection &mdash; base case</caption>
+  <thead><tr><th>Period</th><th class="num">Clients</th><th class="num">Avg monthly</th><th class="num">Subscription</th><th class="num">Contingency</th><th class="num">Total</th></tr></thead>
+  <tbody>
+    <tr><td>Y1 Q1 (Sep&ndash;Nov 26)</td><td class="num">0</td><td class="num">&mdash;</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+    <tr><td>Y1 Q2 (Dec&ndash;Feb)</td><td class="num">8</td><td class="num">700</td><td class="num">12,600</td><td class="num">4,000</td><td class="num">16,600</td></tr>
+    <tr><td>Y1 Q3 (Mar&ndash;May)</td><td class="num">18</td><td class="num">750</td><td class="num">35,100</td><td class="num">12,000</td><td class="num">47,100</td></tr>
+    <tr><td>Y1 Q4 (Jun&ndash;Aug 27)</td><td class="num">30</td><td class="num">800</td><td class="num">62,400</td><td class="num">22,000</td><td class="num">84,400</td></tr>
+    <tr class="total"><td>Year 1</td><td class="num">30</td><td class="num">&mdash;</td><td class="num">110,100</td><td class="num">38,000</td><td class="num">148,100</td></tr>
+    <tr><td>Year 2</td><td class="num">72</td><td class="num">900</td><td class="num">550,800</td><td class="num">165,000</td><td class="num">715,800</td></tr>
+    <tr><td>Year 3</td><td class="num">130</td><td class="num">1,050</td><td class="num">1,272,600</td><td class="num">340,000</td><td class="num">1,612,600</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="scroller band">
+<table>
+  <caption>Three cases</caption>
+  <thead><tr><th>Case</th><th class="num">Year 1</th><th class="num">Year 2</th><th class="num">Year 3</th><th>What it assumes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Bear</strong></td><td class="num">$52k</td><td class="num">$240k</td><td class="num">$520k</td><td>Slow trust-building; 14 clients year one; heavy churn; no channel partners</td></tr>
+    <tr><td><strong>Base</strong></td><td class="num">$148k</td><td class="num">$716k</td><td class="num">$1.61M</td><td>Network converts at ~30%; one hire in year two; billing-company channel opens in year three</td></tr>
+    <tr><td><strong>Bull</strong></td><td class="num">$235k</td><td class="num">$1.15M</td><td class="num">$2.8M</td><td>One MSO or PE platform lands early and brings 20+ practices in a single contract</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="band">
+<div class="note warn">
+  <span class="label">Where these break</span>
+  <p>The base case assumes <strong>you can service 72 clients in year two with one hire.</strong> That holds only if clients work their own appeals and you sell monitoring rather than contingency. Sell too much contingency and you become a labor business that stops scaling around client thirty. Watch this number more carefully than revenue.</p>
+  <p>It also assumes churn under 15% annually. Untested. If a practice works the first worklist, recovers $20k, and then finds nothing much in month four, they will ask why they are still paying. Have an answer: the answer is that month four's quiet is what month five's rate cut costs you if nobody is watching.</p>
+</div>
+</div>
+
+<h2 id="costs">10 &nbsp;Cost structure</h2>
+<div class="scroller band">
+<table>
+  <caption>Operating costs, base case</caption>
+  <thead><tr><th>Item</th><th class="num">Year 1</th><th class="num">Year 2</th><th class="num">Year 3</th><th>Note</th></tr></thead>
+  <tbody>
+    <tr><td>LLC formation and registered agent</td><td class="num">$600</td><td class="num">$300</td><td class="num">$300</td><td>Before any BAA is signed</td></tr>
+    <tr><td>Healthcare attorney &mdash; BAA and MSA</td><td class="num">$1,500</td><td class="num">$2,500</td><td class="num">$5,000</td><td>One-time template, reused forever</td></tr>
+    <tr><td>Cyber liability insurance</td><td class="num">$1,400</td><td class="num">$3,000</td><td class="num">$6,000</td><td>Practices increasingly require proof</td></tr>
+    <tr><td>Google Workspace with signed BAA</td><td class="num">$300</td><td class="num">$900</td><td class="num">$2,400</td><td>Free Gmail cannot legally hold this data</td></tr>
+    <tr><td>Secure file transfer and hosting</td><td class="num">$600</td><td class="num">$2,400</td><td class="num">$7,000</td><td>Encrypted intake portal</td></tr>
+    <tr><td>Compute</td><td class="num">$200</td><td class="num">$1,200</td><td class="num">$4,000</td><td>Analysis is cents per practice</td></tr>
+    <tr><td>Staff</td><td class="num">$0</td><td class="num">$68,000</td><td class="num">$215,000</td><td>Y2: one billing specialist. Y3: three.</td></tr>
+    <tr><td>Sales, travel, conferences</td><td class="num">$2,000</td><td class="num">$12,000</td><td class="num">$30,000</td><td>Specialty society meetings</td></tr>
+    <tr><td>Accounting and misc</td><td class="num">$1,500</td><td class="num">$5,000</td><td class="num">$12,000</td><td></td></tr>
+    <tr class="total"><td>Total cost</td><td class="num">$8,100</td><td class="num">$95,300</td><td class="num">$281,700</td><td></td></tr>
+    <tr class="total"><td>Net (base case)</td><td class="num">$140,000</td><td class="num">$620,500</td><td class="num">$1,330,900</td><td>Before tax and your own draw</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="band">
+<p>The margin profile is the best feature of this business. Marginal cost of analyzing one more practice is effectively zero, so almost every incremental dollar of subscription revenue is gross profit. <strong>Year one requires under $10,000 of capital.</strong> That is the whole reason this is the right business for your situation &mdash; it is funded by its own first customers.</p>
+</div>
+
+<h2 id="ops">11 &nbsp;Operations: where files go and how this scales</h2>
+<div class="band">
+<div class="note warn">
+  <span class="label">Read this before you receive a single file</span>
+  <p>Remittance files contain protected health information. <strong>Never paste them into a chat window, an AI assistant, a personal email, consumer Dropbox, or any service that has not signed a business associate agreement with you.</strong> Doing so is a reportable breach, not a shortcut. This includes pasting them to me.</p>
+</div>
+
+<h3>How files actually reach you</h3>
+<ol>
+  <li>BAA signed with the practice. Nothing moves before this.</li>
+  <li>You send a link to an encrypted intake folder &mdash; a Google Workspace Drive folder under your BAA-covered account, or a purpose-built secure upload portal. Link expires.</li>
+  <li>The practice's biller exports raw <code>.835</code> / <code>.era</code> / <code>.txt</code> files from their clearinghouse portal and drops them in. Not the PDF remittance summaries &mdash; those have already discarded the fields this depends on.</li>
+  <li>You download to an encrypted machine, run the analysis locally, and produce the report.</li>
+  <li>Report and worklist go back through the same secure channel. Files are deleted on the agreed retention schedule.</li>
+</ol>
+
+<h3>What automation looks like at 20, 60, and 130 clients</h3>
+</div>
+
+<div class="band">
+<div class="phase">
+  <div class="when">1&ndash;10</div>
+  <div class="what"><h4>Manual, and that is correct</h4>
+  <p>Files arrive in a shared folder. You run the command line yourself. You read every report before it goes out. Do not automate here &mdash; this is where you learn what the tool gets wrong, and every early client teaches you a clearinghouse quirk you cannot anticipate.</p></div>
+</div>
+<div class="phase">
+  <div class="when">10&ndash;40</div>
+  <div class="what"><h4>Scheduled ingestion</h4>
+  <p>A per-client watched folder. A nightly job that parses anything new, runs the analysis, and posts a refreshed worklist to a simple client portal. Automated alerting when a rate change is detected &mdash; that email is your best retention tool, because it arrives unprompted and is worth money. You still review anything before it reaches a client.</p></div>
+</div>
+<div class="phase">
+  <div class="when">40&ndash;130</div>
+  <div class="what"><h4>Direct clearinghouse connection</h4>
+  <p>Stop asking practices to export files. Get read-only SFTP credentials to their clearinghouse mailbox so 835s flow to you automatically the day they post. This is the step that turns a service into a product: onboarding drops from a week to an afternoon, and the practice never thinks about it again. Add a self-serve client dashboard and appeal-status tracking. Human review moves to exceptions only.</p></div>
+</div>
+</div>
+
+<div class="band">
+<p>The build order matters: the direct clearinghouse connection is the highest-leverage engineering work in the whole plan, and it is worthless before you have forty clients asking for it.</p>
+</div>
+
+<h2 id="moat">12 &nbsp;The real asset, and it is not the software</h2>
+<div class="band">
+<p>The detection engine is a few thousand lines of Python. It is good, and it is not defensible &mdash; a competent engineer rebuilds it in a month, and will.</p>
+<p>What becomes defensible is <strong>the benchmark database.</strong> Once you have processed remittances for a hundred practices, you know something almost nobody knows: what every payer <em>actually</em> allows for every procedure code, by geography, by specialty, in reality rather than in the contract.</p>
+<p>That unlocks a service worth far more than underpayment recovery:</p>
+<div class="script">
+  <span class="who">The year-three conversation</span>
+  <p>"You're being paid 138% of Medicare for cardiac catheterization. The median for independent cardiology groups your size in this region is 161%. Here is what that gap is worth annually, and here is the data to take into your renegotiation."</p>
+</div>
+<p>Contract negotiation support is a much higher-value engagement than claim disputes, and the data to do it credibly cannot be bought &mdash; it accrues only to whoever has been reading everyone's remittances. That is the business worth building toward.</p>
+<div class="note warn">
+  <span class="label">Do this properly or not at all</span>
+  <p>Using client data in aggregate requires explicit rights in your BAA and services agreement, and the aggregate must be genuinely de-identified. Raise it with the attorney when they draft the template &mdash; retrofitting these rights later means renegotiating with every client you have. It costs nothing to include now.</p>
+</div>
+</div>
+
+<h2 id="ending">13 &nbsp;How this business ends</h2>
+<div class="band">
+<p>Every business has an expiry date. Knowing yours tells you what to build and when to sell.</p>
+</div>
+
+<div class="scroller band">
+<table>
+  <caption>Threats, ranked by likelihood</caption>
+  <thead><tr><th>Threat</th><th>Horizon</th><th>Assessment</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Market consolidation</strong></td><td>Now, ongoing</td><td>Already happening and the most certain of these. Mitigated by moving upmarket to MSOs and PE platforms rather than defending the shrinking solo segment.</td></tr>
+    <tr><td><strong>AI commoditization</strong></td><td>1&ndash;3 years</td><td>Near-certain. Others will build equivalent detection. Your defense is not technology &mdash; it is the relationships, the domain credibility, and the benchmark data.</td></tr>
+    <tr><td><strong>EHR vendors close the gap</strong></td><td>2&ndash;5 years</td><td>Athena already has the feature; the missing piece is auto-populating fee schedules from contracts, which AI makes tractable. When an EHR ships that as a default, the entry-level version of this business ends.</td></tr>
+    <tr><td><strong>Clearinghouses add it natively</strong></td><td>3&ndash;5 years</td><td>They already hold the data. The obvious move. Also the obvious acquirer of your book.</td></tr>
+    <tr><td><strong>Payers stop underpaying</strong></td><td>Never</td><td>No incentive exists. Discount this entirely.</td></tr>
+    <tr><td><strong>Regulation</strong></td><td>&mdash;</td><td><strong>Tailwind, not threat.</strong> State prompt-pay laws increasingly attach penalties to underpayment &mdash; Texas requires notice within 270 days to qualify for a penalty on an underpaid amount, which makes systematic detection more valuable, not less. Some states are adding minimum reimbursement floors tied to Medicare.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="band">
+<div class="note money">
+  <span class="label">Honest verdict</span>
+  <p>This is a three-to-seven year window. Plan accordingly: build recurring revenue with clean contracts and low churn, accumulate the benchmark data from day one, and expect that the natural end is selling the book to a clearinghouse, an RCM platform, or a billing company roll-up. Recurring revenue in healthcare services trades at meaningful multiples. A business at $1.5M of ARR with real retention is a genuine asset, not just an income.</p>
+</div>
+</div>
+
+<h2 id="expert">14 &nbsp;Sounding like you belong in the room</h2>
+<div class="band">
+<p>You do not need to code, but you must speak the language without hesitating. Learn these cold.</p>
+
+<dl class="gloss">
+  <dt>835 / ERA</dt><dd>Electronic Remittance Advice. The machine-readable file a payer sends explaining how it adjudicated a batch of claims. Your raw material. The 837 is the claim going out; the 835 is the answer coming back.</dd>
+  <dt>Allowed amount</dt><dd>What the payer says the service is worth. The number the contract governs. Paid = allowed minus patient responsibility.</dd>
+  <dt>CARC / RARC</dt><dd>Claim Adjustment Reason Code and Remittance Advice Remark Code. The numeric reasons a payer reduced a line. <code>CO-45</code> is the ordinary contractual write-off. <code>CO-97</code> is "bundled into another service" &mdash; the one worth arguing about.</dd>
+  <dt>CO / PR / OA / PI</dt><dd>Adjustment group codes. CO is contractual obligation (the practice eats it), PR is patient responsibility (the patient owes it). Confusing these is how people mis-read a remittance.</dd>
+  <dt>Percent of Medicare</dt><dd>How most commercial contracts are written &mdash; "150% of the Medicare Physician Fee Schedule." Ask every practice what their multiple is per payer. Administrators usually know it cold.</dd>
+  <dt>Facility vs non-facility</dt><dd>Medicare pays differently depending on whether a service happened in an office or a hospital, because the practice's overhead differs. Place of service on the claim decides. Comparing across the two manufactures false findings.</dd>
+  <dt>Modifiers 26 and TC</dt><dd>Professional component and technical component. A cardiologist reading an echo in a hospital bills the professional component only. Different code, different price, not comparable to the global service.</dd>
+  <dt>Modifiers 59 / XS</dt><dd>"Distinct procedural service." Tells a payer two procedures were genuinely separate and should not be bundled. When a payer bundles anyway despite the modifier, that is an appealable error.</dd>
+  <dt>NCCI edits</dt><dd>National Correct Coding Initiative &mdash; Medicare's rules on which code pairs may be billed together. Payers apply their own versions, sometimes wrongly.</dd>
+  <dt>Add-on code</dt><dd>A code that is only billed alongside a primary procedure and is separately payable by design. IVUS (92978) and FFR (93571) in cardiology. Bundling denials on these are the highest-yield findings you will produce.</dd>
+  <dt>Timely filing vs appeal window</dt><dd>Different deadlines. Timely filing is how long you have to submit a claim (often 90&ndash;180 days). The appeal window is how long you have to dispute an adjudication (often 30&ndash;90 days from remittance). You care about the second.</dd>
+  <dt>Clearinghouse</dt><dd>The intermediary routing claims out and remittances back &mdash; Availity, Optum, Change, Waystar, Trizetto. Where the practice downloads their 835s from.</dd>
+  <dt>Sequestration</dt><dd>A 2% reduction Medicare applies to <em>payment</em>, not to the allowed amount. Because we work from allowed amounts it never registers as a false finding &mdash; a good detail to mention, because it signals you know the difference.</dd>
+</dl>
+</div>
+
+<h2 id="objections">15 &nbsp;Objection handling</h2>
+<div class="band">
+<div class="script">
+  <span class="who">"Our billing company handles this."</span>
+  <p>"They handle denials, and they're probably good at it. Underpayments are a different animal &mdash; the claim posts as paid, so it never lands in their work queue. And they're paid a percentage of collections, so chasing a $40 variance costs them more than it earns. It's not that they're doing a bad job. It's that nobody's job includes this."</p>
+</div>
+<div class="script">
+  <span class="who">"Doesn't our EHR do this?"</span>
+  <p>"It can, if your fee schedules are loaded and current. When did someone last update yours? That's usually the gap &mdash; the feature works fine, but it's comparing against rates from whenever go-live was."</p>
+</div>
+<div class="script">
+  <span class="who">"We don't have staff to work appeals."</span>
+  <p>"That's why the letters come pre-written, ranked by which ones expire first. If you still can't get to them, we'll work them for you and take a percentage of what actually comes back &mdash; so it costs nothing if we find nothing."</p>
+</div>
+<div class="script">
+  <span class="who">"How do I know your numbers are right?"</span>
+  <p>"Every finding shows its working. When we say Aetna underpaid this claim, we show you the twenty-three other claims where Aetna paid the higher rate for the same code. You can check it against your own remittances. And we only report what's still inside the appeal window &mdash; we don't pad the number with money that's already gone."</p>
+</div>
+<div class="script">
+  <span class="who">"What if the payer just says no?"</span>
+  <p>"Some will. That's why we lead with the findings backed by the payer's own payment history &mdash; those are hard to argue with, because we're citing their adjudication, not our opinion. Expect the rate-change findings to land hardest."</p>
+</div>
+</div>
+
+<h2 id="thirty">16 &nbsp;The first thirty days</h2>
+<div class="band">
+<p>Concrete, ordered, and none of it requires the product to be finished.</p>
+</div>
+
+<div class="band">
+<div class="phase">
+  <div class="when">Week 1</div>
+  <div class="what"><h4>Legal and infrastructure</h4>
+  <p>Form the LLC. Engage a healthcare attorney for a BAA and a services agreement, and make sure the aggregate-de-identified-data rights are in the draft. Set up Google Workspace and execute Google's BAA. Encrypt your laptop. Get a cyber liability quote.</p></div>
+</div>
+<div class="phase">
+  <div class="when">Week 2</div>
+  <div class="what"><h4>Customer zero</h4>
+  <p>Sign the BAA with your father's practice. Have their biller export 24 months of 835 files from the clearinghouse. Run the analysis. Expect it to break on the first real file &mdash; that is the point of doing it now rather than in front of a stranger.</p></div>
+</div>
+<div class="phase">
+  <div class="when">Week 3</div>
+  <div class="what"><h4>Validate the findings with a human</h4>
+  <p>Sit with their billing manager and walk through the top twenty findings one at a time. Some will be wrong. Understanding <em>why</em> they are wrong is worth more than the findings that are right. This is where you actually learn the domain.</p></div>
+</div>
+<div class="phase">
+  <div class="when">Week 4</div>
+  <div class="what"><h4>File the first appeals, then ask for two introductions</h4>
+  <p>Submit real disputes so you learn the payer-side process end to end. Then go back to your father and ask for exactly two introductions &mdash; different specialties, different practice management systems. Not ten. Two, done well, with a real number in hand.</p></div>
+</div>
+</div>
+
+<div class="band">
+<div class="note">
+  <span class="label">The one thing to hold onto</span>
+  <p>The technology is not the hard part and it is already built. The business is trust, domain fluency, and consistent follow-through with a group of people who will talk to each other about whether you were any good. That is entirely within your control, and it is the part that compounds.</p>
+</div>
+</div>
+
+<footer>
+  <p>Prepared September 2026. Market figures drawn from published industry sources current to mid-2026; unit economics are modeled estimates and should be replaced with observed figures after the first three engagements. Nothing here is legal, tax, or compliance advice &mdash; the BAA, the data-rights language, and the entity structure all warrant one conversation with a healthcare attorney before the first file changes hands.</p>
+</footer>
+
+</main>
+</div>
